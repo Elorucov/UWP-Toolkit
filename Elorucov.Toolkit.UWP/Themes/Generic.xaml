@@ -1,0 +1,111 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:local="using:Elorucov.Toolkit.UWP">
+
+    <Style TargetType="controls:Modal">
+        <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="MaxWidth" Value="480"/>
+        <Setter Property="IsTabStop" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:Modal">
+                    <Grid x:Name="LayoutRoot">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="HeightStates">
+                                <VisualState x:Name="Bottom">
+                                    <VisualState.Setters>
+                                        <Setter Target="ModalContent.VerticalAlignment" Value="Bottom"/>
+                                        <Setter Target="ShadowBorder.VerticalAlignment" Value="Bottom"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Center">
+                                    <VisualState.Setters>
+                                        <Setter Target="ModalContent.VerticalAlignment" Value="Center"/>
+                                        <Setter Target="ShadowBorder.VerticalAlignment" Value="Center"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Stretch">
+                                    <VisualState.Setters>
+                                        <Setter Target="ModalContent.VerticalAlignment" Value="Stretch"/>
+                                        <Setter Target="ShadowBorder.VerticalAlignment" Value="Stretch"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Border x:Name="Layer" Background="#7f000000"/>
+                        <Border x:Name="AnimationBorder">
+                            <Grid x:Name="DialogWrapper">
+                                <Rectangle x:Name="ShadowBorder" MaxWidth="{TemplateBinding MaxWidth}" 
+                                           Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"/>
+                                <Border x:Name="ModalContent" Background="{TemplateBinding Background}" 
+                                        HorizontalAlignment="Stretch" MaxWidth="{TemplateBinding MaxWidth}"
+                                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="controls:HalfModal">
+        <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"/>
+        <Setter Property="TitleBarBackground" Value="{ThemeResource SystemControlBackgroundChromeMediumBrush}"/>
+        <Setter Property="TitleBarForeground" Value="{ThemeResource ApplicationForegroundThemeBrush}"/>
+        <Setter Property="TitleBarVisibility" Value="Visible"/>
+        <Setter Property="Padding" Value="12"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:HalfModal">
+                    <Grid x:Name="LayoutRoot">
+                        <Border x:Name="Layer" Background="#7f000000"/>
+                        <Grid x:Name="ITRoot" Background="Transparent" MaxWidth="480">
+                            <StackPanel x:Name="ModalContent" 
+                                    Background="{TemplateBinding Background}" 
+                                    VerticalAlignment="Top">
+                                <Grid x:Name="TitleBar" Visibility="{TemplateBinding TitleBarVisibility}" Canvas.ZIndex="1" Height="48">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.ColumnSpan="2" Background="{TemplateBinding TitleBarBackground}"/>
+                                    <TextBlock Margin="16,0" VerticalAlignment="Center" Foreground="{TemplateBinding TitleBarForeground}" FontWeight="SemiBold" FontSize="16" Text="{TemplateBinding Title}"/>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <Button x:Name="CloseButton" Foreground="{TemplateBinding TitleBarForeground}" Width="48" Height="48" Padding="0" Background="Transparent" FontSize="16" FontFamily="Segoe MDL2 Assets" Content="&#xE10A;"/>
+                                    </StackPanel>
+                                </Grid>
+                                <ContentPresenter Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"/>
+                            </StackPanel>
+                        </Grid>
+                        <TextBlock x:Name="DebugText1" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="12" FontFamily="Consolas"/>
+                        <TextBlock x:Name="DebugText2" VerticalAlignment="Top" HorizontalAlignment="Right" TextWrapping="Wrap" FontSize="12" FontFamily="Consolas" Width="112"/>
+                        <TextBlock x:Name="DebugText3" VerticalAlignment="Bottom" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="12" FontFamily="Consolas"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="controls:UserAvatars">
+        <Setter Property="Height" Value="48"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="MaxDisplayedAvatars" Value="3"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:UserAvatars">
+                    <StackPanel x:Name="Root"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Height="{TemplateBinding Height}" Orientation="Horizontal">
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

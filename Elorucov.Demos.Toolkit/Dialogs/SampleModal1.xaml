@@ -1,0 +1,23 @@
+﻿<elor:Modal
+    x:Class="Elorucov.Demos.Toolkit.Dialogs.SampleModal1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Demos.Toolkit.Dialogs"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" Loaded="Load" Padding="0">
+
+    <ScrollViewer>
+        <StackPanel x:Name="sp" Margin="16">
+            <TextBlock Text="Hello, i'm modal!"/>
+            <TextBlock Margin="0,12,0,0" Text="UserAvatars in modal:"/>
+            <Button Margin="0,12,0,0" Content="Add control" Click="Add"/>
+            <Button Margin="0,12,0,0" Content="Change max modal width" Click="Bkg"/>
+            <Button Margin="0,12,0,0" Content="Change corner radius and margin" Click="ChangeCornerRadius"/>
+            <Button Margin="0,12,0,0" Content="Show/hide shadow" Click="ChangeShadow"/>
+            <Button Margin="0,12,0,0" Content="Change full size desired" Click="ChangeFSD"/>
+            <Button Margin="0,12,0,0" Content="Close" Click="Close"/>
+        </StackPanel>
+    </ScrollViewer>
+</elor:Modal>
