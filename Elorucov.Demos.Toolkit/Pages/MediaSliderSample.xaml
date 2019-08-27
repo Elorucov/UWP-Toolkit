@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel x:Name="sp" Margin="12" Loaded="StackPanel_Loaded">
+    <StackPanel x:Name="sp" MaxWidth="960" Margin="12" Loaded="StackPanel_Loaded">
         <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,6" Text="Media slider"/>
         <elor:MediaSlider x:Name="slider1" Margin="0,16,0,0" Position="0:0:50" Duration="0:1:0" Background="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" ThumbBackground="{ThemeResource SystemControlHighlightAccentBrush}"/>
         <TextBlock>

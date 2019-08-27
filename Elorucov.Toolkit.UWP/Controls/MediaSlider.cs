@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -91,11 +92,19 @@ namespace Elorucov.Toolkit.UWP.Controls {
             if (isPressing) {
                 e.Handled = true;
                 double x = e.GetCurrentPoint(PointerArea).Position.X;
-                ChangeThumbPosition(x);
+                if (x >= 0 && x <= PointerArea.ActualWidth) {
+                    ChangeThumbPosition(x);
+                } else {
+                    StopDragThumb();
+                }
             }
         }
 
         private void StopDragThumb(object sender, PointerRoutedEventArgs e) {
+            StopDragThumb();
+        }
+
+        private void StopDragThumb() {
             Window.Current.Content.PointerMoved -= Delta;
             Window.Current.Content.PointerReleased -= StopDragThumb;
             double d = Duration.TotalMilliseconds;

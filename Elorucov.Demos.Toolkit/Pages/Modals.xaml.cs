@@ -39,7 +39,6 @@ namespace Elorucov.Demos.Toolkit.Pages {
 
         private void btn01(object sender, RoutedEventArgs e) {
             var m = new Dialogs.SampleModal1();
-            m.Padding = new Thickness(0);
             m.Show();
         }
 
