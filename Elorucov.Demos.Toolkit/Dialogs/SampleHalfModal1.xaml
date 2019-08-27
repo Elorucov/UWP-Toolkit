@@ -6,7 +6,7 @@
     xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Title="Half-modal!">
 
     <StackPanel>
         <TextBlock TextWrapping="Wrap" Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam nec neque nisl. Cras nec eros ac neque blandit molestie. Donec in ultrices odio. Nunc sit amet felis non sapien ullamcorper mattis ac a neque. Mauris efficitur ultrices metus, vel cursus libero rhoncus sit amet. Morbi varius eleifend odio a mattis. Maecenas a diam mi. Ut nec lectus et massa pharetra ullamcorper non nec neque. Proin finibus, arcu vitae pretium commodo, leo ligula sodales nulla, sed dignissim turpis odio eget elit. Vestibulum eu placerat neque. Nam nulla risus, tempus eget rhoncus ac, egestas a felis. Ut viverra tortor commodo ultrices gravida. Fusce sit amet eros vitae urna pharetra pulvinar vel nec ipsum. Pellentesque quam quam, suscipit quis tortor consectetur, gravida eleifend est."/>

@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="Elorucov.Demos.Toolkit.Menu"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Demos.Toolkit"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <SuppressNavigationTransitionInfo/>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <GridView x:Name="MainMenu" Margin="4,4,0,0" MaxWidth="960" SelectionMode="None" IsItemClickEnabled="True" ItemClick="OpenPage" Loaded="PrepareBackAnimation">
+        <GridView.Header>
+            <StackPanel Margin="8,8,0,12">
+                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Elorucov's UWP Toolkit"/>
+                <TextBlock Text="Under development"/>
+            </StackPanel>
+        </GridView.Header>
+        <GridView.ItemTemplate>
+            <DataTemplate x:DataType="local:MenuItem">
+                <Grid x:Name="MenuCard" Height="96" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" Loaded="InitResizeEvent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Border Width="96">
+                        <Border.Background>
+                            <ImageBrush>
+                                <ImageBrush.ImageSource>
+                                    <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind PreviewImage}"/>
+                                </ImageBrush.ImageSource>
+                            </ImageBrush>
+                        </Border.Background>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="12">
+                        <TextBlock x:Name="ItemTitle" FontWeight="SemiBold" Text="{x:Bind Title}"/>
+                        <TextBlock TextWrapping="Wrap" Text="{x:Bind Description}"/>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+        </GridView.ItemTemplate>
+    </GridView>
+</Page>

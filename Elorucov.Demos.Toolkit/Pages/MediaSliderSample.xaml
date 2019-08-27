@@ -1,0 +1,21 @@
+﻿<Page x:Name="Root"
+    x:Class="Elorucov.Demos.Toolkit.Pages.MediaSliderSample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Demos.Toolkit.Pages"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel x:Name="sp" Margin="12" Loaded="StackPanel_Loaded">
+        <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,6" Text="Media slider"/>
+        <TextBlock>
+            <Run Text="{Binding Position, ElementName=slider}"/>
+            <Run Text="/"/>
+            <Run Text="{Binding Duration, ElementName=slider}"/>
+        </TextBlock>
+        <elor:MediaSlider x:Name="slider" Margin="0,36,0,0" Position="0:0:50" Duration="0:1:0" Background="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" ThumbBackground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+    </StackPanel>
+</Page>

@@ -1,5 +1,4 @@
-﻿using Elorucov.Toolkit.UWP.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -7,48 +6,37 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
-// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
+// Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace Elorucov.Demos.Toolkit
-{
+namespace Elorucov.Demos.Toolkit.Pages {
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class MainPage : Page
-    {
-        public MainPage()
-        {
+    public sealed partial class UserAvatars : Page {
+        public UserAvatars() {
             this.InitializeComponent();
-            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(360, 480));
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
         }
 
-        private void btn01(object sender, RoutedEventArgs e) {
-            var m = new Dialogs.SampleModal1();
-            m.Padding = new Thickness(0);
-            m.Show();
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
+            base.OnNavigatedTo(e);
+
+            ConnectedAnimation ca = ConnectedAnimationService.GetForCurrentView().GetAnimation("connect");
+            if (ca != null) ca.TryStart(Root);
         }
 
-        private void btn02(object sender, RoutedEventArgs e) {
-            var m = new Dialogs.SampleModal2();
-            m.Show();
-        }
-
-        private void btn03(object sender, RoutedEventArgs e) {
-            var hm = new Dialogs.SampleHalfModal1();
-            hm.Title = "Half-modal!";
-            hm.Show();
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
+            base.OnNavigatingFrom(e);
+            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("connectback", Root);
         }
 
         private void LoadUserAvatars(object sender, RoutedEventArgs e) {
@@ -66,7 +54,7 @@ namespace Elorucov.Demos.Toolkit
             s = Shuffle(s);
 
             ObservableCollection<BitmapImage> avatars = new ObservableCollection<BitmapImage>();
-            foreach(string st in s) {
+            foreach (string st in s) {
                 avatars.Add(new BitmapImage(new Uri(st)));
             }
             avas.Avatars = avatars;
@@ -92,11 +80,11 @@ namespace Elorucov.Demos.Toolkit
             avas.Height = avas.Height - 4;
             avasinfo.Text = $"H: {avas.Height}\nCount: {avas.Avatars.Count}\nMax displayed: {avas.MaxDisplayedAvatars}\nOverrideAvatarsCount: {avas.OverrideAvatarsCount}";
         }
-        
+
         private void OverrideAvCntChanged(TextBox sender, TextBoxTextChangingEventArgs args) {
             int i = 0;
             bool ka = Int32.TryParse(oac.Text, out i);
-            if(ka) {
+            if (ka) {
                 avas.OverrideAvatarsCount = i;
                 avasinfo.Text = $"H: {avas.Height}\nCount: {avas.Avatars.Count}\nMax displayed: {avas.MaxDisplayedAvatars}\nOverrideAvatarsCount: {avas.OverrideAvatarsCount}";
             }

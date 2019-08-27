@@ -108,4 +108,23 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="controls:MediaSlider">
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:MediaSlider">
+                    <Grid x:Name="Root" VerticalAlignment="Center" Height="16">
+                        <Border x:Name="DurLine" Height="4" VerticalAlignment="Center" Background="{TemplateBinding Background}"/>
+                        <Border x:Name="BufLine" Height="4" VerticalAlignment="Center" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left" Opacity="0.5"/>
+                        <Border x:Name="PosLine" Height="4" VerticalAlignment="Center" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left"/>
+                        <Canvas>
+                            <Ellipse x:Name="Thumb" Width="16" Height="16" Fill="{TemplateBinding ThumbBackground}"/>
+                        </Canvas>
+                        <Border x:Name="PointerArea" Background="Transparent"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

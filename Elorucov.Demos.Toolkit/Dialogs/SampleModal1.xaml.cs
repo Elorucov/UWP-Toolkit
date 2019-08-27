@@ -14,7 +14,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Elorucov.Toolkit.UWP.Controls;
 using Windows.UI;
-using Elorucov.Demos.Toolkit.Helpers;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Graphics.Imaging;
 using Windows.UI.Composition;
