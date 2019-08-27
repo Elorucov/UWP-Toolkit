@@ -11,11 +11,17 @@
 
     <StackPanel x:Name="sp" Margin="12" Loaded="StackPanel_Loaded">
         <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,6" Text="Media slider"/>
+        <elor:MediaSlider x:Name="slider1" Margin="0,16,0,0" Position="0:0:50" Duration="0:1:0" Background="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" ThumbBackground="{ThemeResource SystemControlHighlightAccentBrush}"/>
         <TextBlock>
-            <Run Text="{Binding Position, ElementName=slider}"/>
+            <Run Text="{Binding Position, ElementName=slider1}"/>
             <Run Text="/"/>
-            <Run Text="{Binding Duration, ElementName=slider}"/>
+            <Run Text="{Binding Duration, ElementName=slider1}"/>
         </TextBlock>
-        <elor:MediaSlider x:Name="slider" Margin="0,36,0,0" Position="0:0:50" Duration="0:1:0" Background="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}" Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" ThumbBackground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+        <elor:MediaSlider x:Name="slider2" Margin="0,16,0,0" Position="0:24:32" Duration="1:15:0" Background="#7f7f7f7f" Foreground="DarkGreen" ThumbBackground="Green"/>
+        <TextBlock>
+            <Run Text="{Binding Position, ElementName=slider2}"/>
+            <Run Text="/"/>
+            <Run Text="{Binding Duration, ElementName=slider2}"/>
+        </TextBlock>
     </StackPanel>
 </Page>

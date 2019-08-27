@@ -120,6 +120,12 @@
                         <Border x:Name="PosLine" Height="4" VerticalAlignment="Center" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left"/>
                         <Canvas>
                             <Ellipse x:Name="Thumb" Width="16" Height="16" Fill="{TemplateBinding ThumbBackground}"/>
+                            <Border x:Name="PositionFlyout" Padding="6,2" Visibility="Collapsed" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+                                <Border.RenderTransform>
+                                    <CompositeTransform TranslateY="-36"/>
+                                </Border.RenderTransform>
+                                <TextBlock x:Name="PositionTime" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Text=" "/>
+                            </Border>
                         </Canvas>
                         <Border x:Name="PointerArea" Background="Transparent"/>
                     </Grid>
