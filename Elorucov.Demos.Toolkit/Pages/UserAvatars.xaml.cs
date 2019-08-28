@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Elorucov.Toolkit.UWP.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -40,24 +41,41 @@ namespace Elorucov.Demos.Toolkit.Pages {
         }
 
         private void LoadUserAvatars(object sender, RoutedEventArgs e) {
-            string el = "https://pp.userapi.com/c847021/v847021629/205e9e/n8E9p-bmhAM.jpg";
-            string eee = "https://sun1-28.userapi.com/c849432/v849432217/18ad60/Vls0Q3sb1UY.jpg";
-            string grs = "https://sun1-87.userapi.com/c840236/v840236023/829e7/skMZSSfugD8.jpg";
-            string sdl = "https://pp.userapi.com/c850536/v850536781/1460ff/N-UOCTmgnVk.jpg";
-            string mrh = "https://sun1-20.userapi.com/c858228/v858228758/1452c/vLPD8kTfAWs.jpg";
-            string nik = "https://sun1-26.userapi.com/c850128/v850128006/8633f/yRgM9VtYjBA.jpg";
-            string mp3 = "https://sun1-27.userapi.com/c840335/v840335671/849ea/-4rawXT-t0g.jpg";
-            string vas = "https://sun1-20.userapi.com/c855424/v855424547/73a0b/B60DX8PtOJc.jpg";
-            string tsi = "https://sun1-22.userapi.com/c830708/v830708352/1c50b3/W-ZDnTalKLE.jpg";
+            ObservableCollection<UserAvatarItem> uai = new ObservableCollection<UserAvatarItem> {
+                new UserAvatarItem {
+                    Name = "Elchin Orujov",
+                    Image = new BitmapImage(new Uri("https://pp.userapi.com/c847021/v847021629/205e9e/n8E9p-bmhAM.jpg")),
+                },
+                new UserAvatarItem {
+                    Name = "Eugene Kotlyarov",
+                    Image = new BitmapImage(new Uri("https://sun1-28.userapi.com/c849432/v849432217/18ad60/Vls0Q3sb1UY.jpg")),
+                },
+                new UserAvatarItem {
+                    Name = "Gregory Klyushnikov",
+                    Image = new BitmapImage(new Uri("https://sun1-87.userapi.com/c840236/v840236023/829e7/skMZSSfugD8.jpg")),
+                },
+                new UserAvatarItem {
+                    Name = "Egor Metlitsky",
+                    Image = new BitmapImage(new Uri("https://sun1-27.userapi.com/c840335/v840335671/849ea/-4rawXT-t0g.jpg")),
+                },
+                new UserAvatarItem {
+                    Name = "Sergey Dilong",
+                    Image = new BitmapImage(new Uri("https://pp.userapi.com/c850536/v850536781/1460ff/N-UOCTmgnVk.jpg")),
+                },
+                new UserAvatarItem {
+                    Name = "Nikolay Borisov",
+                    Image = new BitmapImage(new Uri("https://sun1-26.userapi.com/c850128/v850128006/8633f/yRgM9VtYjBA.jpg")),
+                },
+                new UserAvatarItem {
+                    Name = "Oleg Zuev (no-avatar test)"
+                },
+                new UserAvatarItem {
+                    Name = "Willy Willy (no-avatar test)"
+                },
+            };
 
-            List<string> s = new List<string> { el, eee, grs, sdl, mrh, nik, mp3, vas, tsi };
-            s = Shuffle(s);
-
-            ObservableCollection<BitmapImage> avatars = new ObservableCollection<BitmapImage>();
-            foreach (string st in s) {
-                avatars.Add(new BitmapImage(new Uri(st)));
-            }
-            avas.Avatars = avatars;
+            uai = Shuffle(uai);
+            avas.Avatars = uai;
             avasinfo.Text = $"H: {avas.Height}\nCount: {avas.Avatars.Count}\nMax displayed: {avas.MaxDisplayedAvatars}\nOverrideAvatarsCount: {avas.OverrideAvatarsCount}";
         }
 
@@ -92,12 +110,12 @@ namespace Elorucov.Demos.Toolkit.Pages {
 
         private static Random rng = new Random();
 
-        private List<string> Shuffle(List<string> list) {
+        private ObservableCollection<UserAvatarItem> Shuffle(ObservableCollection<UserAvatarItem> list) {
             int n = list.Count;
             while (n > 1) {
                 n--;
                 int k = rng.Next(n + 1);
-                string value = list[k];
+                UserAvatarItem value = list[k];
                 list[k] = list[n];
                 list[n] = value;
             }

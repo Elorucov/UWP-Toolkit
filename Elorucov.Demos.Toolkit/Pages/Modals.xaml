@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MaxWidth="960">
 
-    <StackPanel Margin="12">
+    <StackPanel Margin="12" HorizontalAlignment="Left">
         <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,12" Text="Modal &amp; dialogs"/>
         <Button Margin="0,0,0,8" Content="Modal" Click="btn01"/>
         <Button Margin="0,0,0,8" Content="Modal with long text" Click="btn02"/>

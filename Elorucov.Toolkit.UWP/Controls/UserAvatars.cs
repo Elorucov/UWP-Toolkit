@@ -18,15 +18,32 @@ using Windows.UI.Xaml.Shapes;
 // The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
 
 namespace Elorucov.Toolkit.UWP.Controls {
+    public class UserAvatarItem {
+        public string Name { get; set; }
+        public string Initials { get { return GetInitials(); } }
+        public BitmapImage Image { get; set; }
+
+        private string GetInitials() {
+            string str = String.Empty;
+            if (!String.IsNullOrEmpty(Name)) {
+                string[] s = Name.Split(' ');
+                for(int i = 0; i < 2; i++) {
+                    str += s[i][0];
+                }
+            }
+            return str.ToUpperInvariant();
+        }
+    }
+
     public sealed class UserAvatars : Control {
 
         #region Properties
 
         public static readonly DependencyProperty AvatarsProperty =
-                DependencyProperty.Register("Avatars", typeof(ObservableCollection<BitmapImage>), typeof(UserAvatars), new PropertyMetadata(default(ObservableCollection<BitmapImage>)));
+                DependencyProperty.Register("Avatars", typeof(ObservableCollection<UserAvatarItem>), typeof(UserAvatars), new PropertyMetadata(default(ObservableCollection<BitmapImage>)));
 
-        public ObservableCollection<BitmapImage> Avatars {
-            get { return (ObservableCollection<BitmapImage>)GetValue(AvatarsProperty); }
+        public ObservableCollection<UserAvatarItem> Avatars {
+            get { return (ObservableCollection<UserAvatarItem>)GetValue(AvatarsProperty); }
             set { SetValue(AvatarsProperty, value); }
         }
 
@@ -59,6 +76,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             RegisterPropertyChangedCallback(AvatarsProperty, (a, b) => { RenderAvatars(); });
             RegisterPropertyChangedCallback(MaxDisplayedAvatarsProperty, (a, b) => { RenderAvatars(); });
             RegisterPropertyChangedCallback(OverrideAvatarsCountProperty, (a, b) => { RenderAvatars(); });
+            RegisterPropertyChangedCallback(HeightProperty, (a, b) => { RenderAvatars(); });
             Debug.WriteLine("UserAvatars: init.");
         }
 
@@ -98,8 +116,11 @@ namespace Elorucov.Toolkit.UWP.Controls {
             }
         }
 
-        private Viewbox GetBittenCircle(BitmapImage avatar) {
-            avatar.DecodePixelType = DecodePixelType.Logical;
+        private Viewbox GetBittenCircle(UserAvatarItem avatar) {
+            if(avatar.Image != null) {
+                avatar.Image.DecodePixelType = DecodePixelType.Logical;
+                avatar.Image.DecodePixelHeight = (int)Height;
+            }
 
             Viewbox vb = new Viewbox();
             vb.Stretch = Stretch.Uniform;
@@ -109,21 +130,34 @@ namespace Elorucov.Toolkit.UWP.Controls {
             c.Width = 48;
             c.Height = 48;
 
-            ImageBrush ib = new ImageBrush();
-            ib.ImageSource = avatar;
-            ib.Stretch = Stretch.UniformToFill;
+            Brush b = new ImageBrush();
+            if (avatar.Image != null) {
+                ImageBrush ib = new ImageBrush();
+                ib.ImageSource = avatar.Image;
+                ib.Stretch = Stretch.UniformToFill;
+                b = ib;
+            } else {
+                b = (SolidColorBrush)Application.Current.Resources["SystemControlBackgroundAccentBrush"];
+                Border tb = new Border();
+                tb.Height = 48;
+                tb.Width = 48;
+                if (!String.IsNullOrEmpty(avatar.Initials)) {
+                    tb.Child = GetTextBlockForCircle(avatar.Initials, true);
+                    c.Children.Add(tb);
+                }
+            }
 
             string pathxaml = $"<Path xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' Fill='#A0A0A0' StrokeThickness='0' Data='M 24 2 A 22 22 0 0 0 2 24 A 22 22 0 0 0 24 46 A 22 22 0 0 0 42.847656 35.296875 A 24.000001 24 0 0 1 40 24 A 24 24 0 0 1 42.84375 12.689453 A 22 22 0 0 0 24 2 z ' />";
             Path p = XamlReader.Load(pathxaml) as Path;
-            p.Fill = ib;
-            //p.Fill = new SolidColorBrush(Color.FromArgb(255, 128, 128, 128));
+            p.Fill = b;
 
-            c.Children.Add(p);
+            if(!String.IsNullOrEmpty(avatar.Name)) ToolTipService.SetToolTip(c, avatar.Name);
+            c.Children.Insert(0, p);
             vb.Child = c;
             return vb;
         }
 
-        private Viewbox GetCircle(BitmapImage avatar = null) {
+        private Viewbox GetCircle(UserAvatarItem avatar = null) {
             Viewbox vb = new Viewbox();
             vb.Stretch = Stretch.Uniform;
             vb.RequestedTheme = ElementTheme.Dark;
@@ -135,27 +169,38 @@ namespace Elorucov.Toolkit.UWP.Controls {
 
             Ellipse e = new Ellipse();
             e.Fill = (SolidColorBrush)Application.Current.Resources["SystemControlBackgroundAccentBrush"];
-            if (avatar != null) {
-                avatar.DecodePixelType = DecodePixelType.Logical;
-                e.Fill = new ImageBrush() { ImageSource = avatar };
+            if(avatar != null) {
+                if (avatar.Image != null) {
+                    avatar.Image.DecodePixelType = DecodePixelType.Logical;
+                    avatar.Image.DecodePixelHeight = (int)Height;
+                    e.Fill = new ImageBrush() { ImageSource = avatar.Image };
+                } else if(avatar.Image == null && !String.IsNullOrEmpty(avatar.Initials)) {
+                    g.Children.Add(GetTextBlockForCircle(avatar.Initials, true));
+                }
             }
             e.Width = 44;
             e.Height = 44;
-            g.Children.Add(e);
+            g.Children.Insert(0, e);
+            if (avatar != null && !String.IsNullOrEmpty(avatar.Name)) ToolTipService.SetToolTip(e, avatar.Name);
 
-            if(avatar == null) {
+            if (avatar == null) {
                 int z = OverrideAvatarsCount > 0 ? OverrideAvatarsCount : Avatars.Count;
-                TextBlock t = new TextBlock();
-                t.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
-                t.LineHeight = 16;
-                t.VerticalAlignment = VerticalAlignment.Center;
-                t.TextAlignment = TextAlignment.Center;
-                t.Text = $"+{z - MaxDisplayedAvatars}";
-                g.Children.Add(t);
+                g.Children.Add(GetTextBlockForCircle($"+{z - MaxDisplayedAvatars}"));
             }
 
             vb.Child = g;
             return vb;
+        }
+
+        private TextBlock GetTextBlockForCircle(string text, bool isBold = false) {
+            TextBlock t = new TextBlock();
+            t.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+            t.LineHeight = 16;
+            t.VerticalAlignment = VerticalAlignment.Center;
+            t.TextAlignment = TextAlignment.Center;
+            if (isBold) t.FontWeight = new Windows.UI.Text.FontWeight() { Weight = 600 };
+            t.Text = text;
+            return t;
         }
     }
 }
