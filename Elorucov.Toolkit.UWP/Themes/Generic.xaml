@@ -117,11 +117,11 @@
                 <ControlTemplate TargetType="controls:MediaSlider">
                     <Grid x:Name="Root" VerticalAlignment="Center" Height="16">
                         <Border x:Name="DurLine" Height="4" VerticalAlignment="Center" Background="{TemplateBinding Background}"/>
-                        <Border x:Name="BufLine" Height="4" VerticalAlignment="Center" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left" Opacity="0.5"/>
+                        <Border x:Name="BufLine" Height="4" VerticalAlignment="Center" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left" Opacity="0.3"/>
                         <Border x:Name="PosLine" Height="4" VerticalAlignment="Center" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left"/>
                         <Canvas>
                             <Ellipse x:Name="Thumb" Width="16" Height="16" Fill="{TemplateBinding ThumbBackground}"/>
-                            <Border x:Name="PositionFlyout" Padding="6,2" Visibility="Collapsed" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}">
+                            <Border x:Name="PositionFlyout" Padding="6,2" Visibility="Collapsed" Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}" BorderBrush="{ThemeResource ContentDialogBorderThemeBrush}" BorderThickness="1">
                                 <Border.RenderTransform>
                                     <CompositeTransform TranslateY="-36"/>
                                 </Border.RenderTransform>

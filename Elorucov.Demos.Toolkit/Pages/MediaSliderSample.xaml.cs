@@ -44,5 +44,10 @@ namespace Elorucov.Demos.Toolkit.Pages {
             await Task.Delay(500);
             sp.Background = new SolidColorBrush(Colors.Transparent);
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            if (slider2.BufferingProgress > 1) return;
+            slider2.BufferingProgress += 0.05;
+        }
     }
 }

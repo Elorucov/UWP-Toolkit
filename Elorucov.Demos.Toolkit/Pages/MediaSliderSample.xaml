@@ -17,11 +17,13 @@
             <Run Text="/"/>
             <Run Text="{Binding Duration, ElementName=slider1}"/>
         </TextBlock>
-        <elor:MediaSlider x:Name="slider2" Margin="0,16,0,0" Position="0:24:32" Duration="1:15:0" Background="#7f7f7f7f" Foreground="DarkGreen" ThumbBackground="Green"/>
+        <elor:MediaSlider x:Name="slider2" Margin="0,16,0,0" BufferingProgress="0.2" Position="0:10:00" Duration="1:15:0" Background="#7f7f7f7f" Foreground="DarkGreen" ThumbBackground="Green"/>
         <TextBlock>
             <Run Text="{Binding Position, ElementName=slider2}"/>
             <Run Text="/"/>
             <Run Text="{Binding Duration, ElementName=slider2}"/>
+            <Run Text="("/><Run Text="{Binding BufferingProgress, ElementName=slider2}"/><Run Text=")"/>
         </TextBlock>
+        <Button Content="Increase buffering progress" Click="Button_Click"/>
     </StackPanel>
 </Page>

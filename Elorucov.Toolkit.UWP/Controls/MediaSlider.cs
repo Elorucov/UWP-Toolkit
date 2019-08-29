@@ -39,6 +39,14 @@ namespace Elorucov.Toolkit.UWP.Controls {
             set { SetValue(PositionProperty, value); }
         }
 
+        public static readonly DependencyProperty BufferingProgressProperty =
+               DependencyProperty.Register("BufferingProgress", typeof(double), typeof(MediaSlider), new PropertyMetadata((double)1));
+
+        public double BufferingProgress {
+            get { return (double)GetValue(BufferingProgressProperty); }
+            set { SetValue(BufferingProgressProperty, value); }
+        }
+
         public event EventHandler<TimeSpan> PositionChanged;
 
         #region Private fields
@@ -60,6 +68,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             this.DefaultStyleKey = typeof(MediaSlider);
             RegisterPropertyChangedCallback(DurationProperty, (a, b) => { SetupSlider(); });
             RegisterPropertyChangedCallback(PositionProperty, (a, b) => { SetupSlider(); });
+            RegisterPropertyChangedCallback(BufferingProgressProperty, (a, b) => { SetupSlider(); });
         }
 
         protected override void OnApplyTemplate() {
@@ -107,14 +116,19 @@ namespace Elorucov.Toolkit.UWP.Controls {
         private void StopDragThumb() {
             Window.Current.Content.PointerMoved -= Delta;
             Window.Current.Content.PointerReleased -= StopDragThumb;
+            isPressing = false;
+
             double d = Duration.TotalMilliseconds;
             double w = Root.ActualWidth;
             double sp = Canvas.GetLeft(Thumb);
             double t = Thumb.Width;
             double p = d / (w - t) * sp;
-            Position = TimeSpan.FromMilliseconds(p);
-            PositionChanged?.Invoke(this, Position);
-            isPressing = false;
+            if (1 / d * p <= BufferingProgress) {
+                Position = TimeSpan.FromMilliseconds(p);
+                PositionChanged?.Invoke(this, Position);
+            } else {
+                SetupSlider();
+            }
             PositionFlyout.Visibility = Visibility.Collapsed;
         }
 
@@ -169,6 +183,13 @@ namespace Elorucov.Toolkit.UWP.Controls {
                     double t = Thumb.Width;
                     double plt = (w - t) / d * p;
                     Canvas.SetLeft(Thumb, plt);
+                }
+                if(BufferingProgress >= 0 && BufferingProgress <= 1) {
+                    BufLine.Width = w / 1 * BufferingProgress;
+                } else if(BufferingProgress < 0) {
+                    BufLine.Width = 0;
+                } else if (BufferingProgress > 1) {
+                    BufLine.Width = w;
                 }
             }
         }
