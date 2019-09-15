@@ -45,12 +45,11 @@ namespace Elorucov.Demos.Toolkit.Dialogs {
         }
 
         private void Bkg(object sender, RoutedEventArgs e) {
-            MaxWidth = 320;
+            Title = String.IsNullOrEmpty(Title) ? "Some title" : null;
         }
 
-        private void ChangeCornerRadius(object sender, RoutedEventArgs e) {
-            CornerRadius += 8;
-            Margin = new Thickness(8);
+        private void ChangeClsBtn(object sender, RoutedEventArgs e) {
+            CloseButtonVisibility = CloseButtonVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void ChangeShadow(object sender, RoutedEventArgs e) {

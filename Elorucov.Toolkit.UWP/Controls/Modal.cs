@@ -46,6 +46,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
         Grid DialogWrapper;
         Border ModalContent;
         Rectangle ShadowBorder;
+        TextBlock TitleText;
+        Button CloseButton;
 
         DropShadow _shadow;
         SpriteVisual _visual;
@@ -80,6 +82,22 @@ namespace Elorucov.Toolkit.UWP.Controls {
             set { SetValue(DropShadowProperty, value); }
         }
 
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(Modal), new PropertyMetadata(""));
+
+        public string Title {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public static readonly DependencyProperty CloseButtonVisibilityProperty =
+            DependencyProperty.Register("CloseButtonVisibility", typeof(Visibility), typeof(Modal), new PropertyMetadata(default(Visibility)));
+
+        public Visibility CloseButtonVisibility {
+            get { return (Visibility)GetValue(CloseButtonVisibilityProperty); }
+            set { SetValue(CloseButtonVisibilityProperty, value); }
+        }
+
         #endregion
 
         public Modal() {
@@ -94,6 +112,9 @@ namespace Elorucov.Toolkit.UWP.Controls {
             RegisterPropertyChangedCallback(DropShadowProperty, (a, b) => {
                 if (_shadow != null) _shadow.Color = DropShadow ? Colors.Black : Colors.Transparent;
             });
+            RegisterPropertyChangedCallback(TitleProperty, (a, b) => {
+                if (TitleText != null) TitleText.Visibility = String.IsNullOrEmpty(Title) ? Visibility.Collapsed : Visibility.Visible;
+            });
         }
 
         protected override void OnApplyTemplate() {
@@ -105,6 +126,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
             DialogWrapper = (Grid)GetTemplateChild("DialogWrapper");
             ShadowBorder = (Rectangle)GetTemplateChild("ShadowBorder");
             ModalContent = (Border)GetTemplateChild("ModalContent");
+            TitleText = (TextBlock)GetTemplateChild("TitleText");
+            CloseButton = (Button)GetTemplateChild("CloseButton");
 
             ModalContent.SizeChanged += (a, b) => {
                 ShadowBorder.Height = ModalContent.ActualHeight;
@@ -118,6 +141,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             SetupShadow();
 
             Window.Current.SizeChanged += (a, b) => Resize(b.Size);
+            CloseButton.Click += (a, b) => Hide();
             ApplicationView.GetForCurrentView().VisibleBoundsChanged += (a, b) => Resize();
             Loaded += (a, b) => {
                 ChangeMaxWidth(this, MaxWidthProperty);

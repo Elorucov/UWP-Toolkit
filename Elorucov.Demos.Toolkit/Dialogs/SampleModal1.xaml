@@ -13,8 +13,8 @@
             <TextBlock Text="Hello, i'm modal!"/>
             <TextBlock Margin="0,12,0,0" Text="UserAvatars in modal:"/>
             <Button Margin="0,12,0,0" Content="Add control" Click="Add"/>
-            <Button Margin="0,12,0,0" Content="Change max modal width" Click="Bkg"/>
-            <Button Margin="0,12,0,0" Content="Change corner radius and margin" Click="ChangeCornerRadius"/>
+            <Button Margin="0,12,0,0" Content="Set title" Click="Bkg"/>
+            <Button Margin="0,12,0,0" Content="Change close button visibility" Click="ChangeClsBtn"/>
             <Button Margin="0,12,0,0" Content="Show/hide shadow" Click="ChangeShadow"/>
             <Button Margin="0,12,0,0" Content="Change full size desired" Click="ChangeFSD"/>
             <Button Margin="0,12,0,0" Content="Close" Click="Close"/>

@@ -176,13 +176,18 @@ namespace Elorucov.Toolkit.UWP.Controls {
                 double w = Root.ActualWidth;
                 double d = Duration.TotalMilliseconds;
                 double p = Position.TotalMilliseconds;
-                double pl = w / d * p;
-                PosLine.Width = pl;
+                if (d > 0) {
+                    Thumb.Visibility = Visibility.Visible;
+                    double pl = w / d * p;
+                    PosLine.Width = pl;
 
-                if(!isPressing) {
-                    double t = Thumb.Width;
-                    double plt = (w - t) / d * p;
-                    Canvas.SetLeft(Thumb, plt);
+                    if (!isPressing) {
+                        double t = Thumb.Width;
+                        double plt = (w - t) / d * p;
+                        Canvas.SetLeft(Thumb, plt);
+                    }
+                } else {
+                    Thumb.Visibility = Visibility.Collapsed;
                 }
                 if(BufferingProgress >= 0 && BufferingProgress <= 1) {
                     BufLine.Width = w / 1 * BufferingProgress;

@@ -97,6 +97,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             int max = MaxDisplayedAvatars;
             var avatars = Avatars;
             if(Root != null && avatars != null && avatars.Count > 0 && max >= 0) {
+                Root.RequestedTheme = ElementTheme.Dark;
                 Debug.WriteLine("UserAvatars: Rendering!");
                 Root.Children.Clear();
                 el = 0;

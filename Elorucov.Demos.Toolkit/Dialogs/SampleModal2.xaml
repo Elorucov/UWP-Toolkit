@@ -6,7 +6,7 @@
     xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" CornerRadius="12" DropShadow="True" Margin="8" FullSizeDesired="True">
+    mc:Ignorable="d" CornerRadius="12" DropShadow="True" Margin="8" FullSizeDesired="True" Title="Sample modal" CloseButtonVisibility="Visible" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" BorderThickness="1">
 
     <Grid>
         <Grid.RowDefinitions>
