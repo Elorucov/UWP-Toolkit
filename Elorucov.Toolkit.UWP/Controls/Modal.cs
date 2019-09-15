@@ -144,6 +144,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             CloseButton.Click += (a, b) => Hide();
             ApplicationView.GetForCurrentView().VisibleBoundsChanged += (a, b) => Resize();
             Loaded += (a, b) => {
+                if (TitleText != null) TitleText.Visibility = String.IsNullOrEmpty(Title) ? Visibility.Collapsed : Visibility.Visible;
                 ChangeMaxWidth(this, MaxWidthProperty);
                 ChangeMargin(this, MarginProperty);
                 UpdateCornerRadius(CornerRadius);
@@ -216,8 +217,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
                     top = 16; bottom = 16;
                 }
             } else {
-                top = IsWide ? 40 : 0;
-                bottom = IsWide ? 40 : 0;
+                top = 32;
+                bottom = IsWide ? 32 : 0;
             }
             DialogWrapper.Margin = new Thickness(0, top, 0, bottom);
         }
