@@ -25,8 +25,9 @@ namespace Elorucov.Demos.Toolkit.Dialogs {
             this.InitializeComponent();
         }
 
-        private void Close(object sender, RoutedEventArgs e) {
-            Hide();
+        private void OpenSecond(object sender, RoutedEventArgs e) {
+            SampleModal1 sm = new SampleModal1();
+            sm.Show();
         }
     }
 }

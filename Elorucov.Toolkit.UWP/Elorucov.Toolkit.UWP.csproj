@@ -120,10 +120,10 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controls\HalfModal.cs" />
     <Compile Include="Controls\IModal.cs" />
     <Compile Include="Controls\MediaSlider.cs" />
     <Compile Include="Controls\Modal.cs" />
+    <Compile Include="Controls\ModalsManager.cs" />
     <Compile Include="Controls\UserAvatars.cs" />
     <Compile Include="Helpers\InteractionTrackerOwner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

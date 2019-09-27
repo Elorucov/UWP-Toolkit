@@ -33,6 +33,9 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Border Width="96">
+                        <Border.RenderTransform>
+                            <RotateTransform Angle="{x:Bind RotateAngle}" CenterX="48" CenterY="48"/>
+                        </Border.RenderTransform>
                         <Border.Background>
                             <ImageBrush>
                                 <ImageBrush.ImageSource>

@@ -32,12 +32,12 @@ namespace Elorucov.Demos.Toolkit.Pages {
             base.OnNavigatedTo(e);
 
             ConnectedAnimation ca = ConnectedAnimationService.GetForCurrentView().GetAnimation("connect");
-            if (ca != null) ca.TryStart(Root);
+            if (ca != null) ca.TryStart(PageTitle);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
             base.OnNavigatingFrom(e);
-            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("connectback", Root);
+            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("connectback", PageTitle);
         }
 
         private void LoadUserAvatars(object sender, RoutedEventArgs e) {

@@ -9,8 +9,18 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MaxWidth="960">
 
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <DrillInNavigationTransitionInfo/>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
     <StackPanel Margin="12" HorizontalAlignment="Left" Loaded="LoadUserAvatars">
-        <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,12" Text="User Avatars"/>
+        <TextBlock x:Name="PageTitle" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,12" Text="User Avatars"/>
         <elor:UserAvatars x:Name="avas" Margin="0,0,0,8"/>
         <TextBlock x:Name="avasinfo" Margin="0,0,0,8"/>
         <StackPanel Margin="0,0,0,8" Orientation="Horizontal">

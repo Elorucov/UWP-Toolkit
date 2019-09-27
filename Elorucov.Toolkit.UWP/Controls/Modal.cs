@@ -150,23 +150,19 @@ namespace Elorucov.Toolkit.UWP.Controls {
                 UpdateCornerRadius(CornerRadius);
                 Animate(Windows.UI.Composition.AnimationDirection.Normal, animationDuration);
                 SetFocus(ModalContent);
-                EventHandler<BackRequestedEventArgs> bre = new EventHandler<BackRequestedEventArgs>(HideModal);
             };
             WasShowed = true;
-        }
-
-        private void HideModal(object sender, BackRequestedEventArgs e) {
-            e.Handled = true;
-            Hide();
         }
 
         public event EventHandler<object> Closed;
 
         public void Show() {
+            ModalsManager.Add(this);
             popup.IsOpen = true;
         }
 
         public async void Hide(object data = null) {
+            ModalsManager.Remove(this);
             Animate(Windows.UI.Composition.AnimationDirection.Reverse, animationDuration);
             await Task.Delay(animationDuration);
             Closed?.Invoke(this, data);

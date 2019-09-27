@@ -6,9 +6,9 @@
     xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" CornerRadius="12" DropShadow="True" Margin="8" FullSizeDesired="True" Title="Sample modal" CloseButtonVisibility="Visible" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" BorderThickness="1">
+    mc:Ignorable="d" CornerRadius="12" DropShadow="True" Margin="8" Padding="0" FullSizeDesired="True" Title="Sample modal 2" CloseButtonVisibility="Visible" BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}" BorderThickness="1">
 
-    <Grid>
+    <Grid Margin="12,0,12,12">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="48"/>
@@ -19,6 +19,6 @@
                 <TextBlock TextWrapping="Wrap" Text="Nulla accumsan sit amet arcu ut dignissim. Aenean id nisl metus. Nam auctor ligula quis magna efficitur interdum. Pellentesque vel augue eros. Phasellus convallis imperdiet tristique. Phasellus finibus et nulla id vulputate. Fusce nec nulla viverra metus semper mollis. Vivamus placerat libero massa, at pellentesque justo aliquet consequat. Phasellus et varius ligula. Integer egestas facilisis lorem elementum hendrerit. Donec tincidunt nisi non magna auctor dictum. Nam pellentesque ullamcorper neque in feugiat."/>
             </StackPanel>
         </ScrollViewer>
-        <Button Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Content="Close" Click="Close"/>
+        <Button Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Content="Open 1-st modal" Click="OpenSecond"/>
     </Grid>
 </elor:Modal>

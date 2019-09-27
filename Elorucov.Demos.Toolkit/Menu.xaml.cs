@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Elorucov.Toolkit.UWP.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -24,6 +25,7 @@ namespace Elorucov.Demos.Toolkit {
         public string Title { get; set; }
         public string Description { get; set; }
         public Uri PreviewImage { get; set; }
+        public double RotateAngle { get; set; } = 0;
         public Type Page { get; set; }
     }
         
@@ -38,21 +40,27 @@ namespace Elorucov.Demos.Toolkit {
             new MenuItem {
                 Title = "User avatars",
                 Description = "Description",
-                PreviewImage = new Uri("ms-appx:///Assets/menuitem.png"),
+                PreviewImage = new Uri("ms-appx:///Assets/Previews/UserAvatars.png"),
                 Page = typeof(Pages.UserAvatars)
             },
             new MenuItem {
                 Title = "Media slider",
-                Description = "Description",
-                PreviewImage = new Uri("ms-appx:///Assets/menuitem.png"),
+                Description = "for audioplayers",
+                PreviewImage = new Uri("ms-appx:///Assets/Previews/MediaSlider.png"),
                 Page = typeof(Pages.MediaSliderSample)
             },
             new MenuItem {
                 Title = "Modals",
-                Description = "Simple modal and \"half\"-modal",
-                PreviewImage = new Uri("ms-appx:///Assets/menuitem.png"),
+                Description = "Simple modal",
+                PreviewImage = new Uri("ms-appx:///Assets/Previews/Modals.png"),
                 Page = typeof(Pages.Modals)
             },
+            //new MenuItem {
+            //    Title = "Hint flyout",
+            //    Description = "Description",
+            //    PreviewImage = new Uri("https://sun1-23.userapi.com/c849432/v849432217/18ad60/Vls0Q3sb1UY.jpg"),
+            //    Page = typeof(Pages.Modals)
+            //},
         };
 
         public Menu() {
@@ -63,9 +71,11 @@ namespace Elorucov.Demos.Toolkit {
 
         private void Load(object sender, RoutedEventArgs e) {
             SystemNavigationManager.GetForCurrentView().BackRequested += (a, b) => {
-                if (Frame.CanGoBack) {
-                    b.Handled = true;
-                    Frame.GoBack(new SuppressNavigationTransitionInfo());
+                if(!ModalsManager.HaveOpenedModals) {
+                    if (Frame.CanGoBack) {
+                        b.Handled = true;
+                        Frame.GoBack(new DrillInNavigationTransitionInfo());
+                    }
                 }
             };
             Frame.Navigated += (a, b) => {
@@ -96,7 +106,7 @@ namespace Elorucov.Demos.Toolkit {
                 MainMenu.UpdateLayout();
                 ConnectedAnimation ca = ConnectedAnimationService.GetForCurrentView().GetAnimation("connectback");
                 if (ca != null) {
-                    bool res = await MainMenu.TryStartConnectedAnimationAsync(ca, SelectedMenuItem, "MenuCard");
+                    bool res = await MainMenu.TryStartConnectedAnimationAsync(ca, SelectedMenuItem, "ItemTitle");
                     System.Diagnostics.Debug.WriteLine($"Result: {res}");
                 }
             }
@@ -104,8 +114,8 @@ namespace Elorucov.Demos.Toolkit {
 
         private void OpenPage(object sender, ItemClickEventArgs e) {
             SelectedMenuItem = e.ClickedItem as MenuItem;
-            ConnectedAnimation ca = MainMenu.PrepareConnectedAnimation("connect", e.ClickedItem, "MenuCard");
-            Frame.Navigate(SelectedMenuItem.Page, null, new SuppressNavigationTransitionInfo());
+            ConnectedAnimation ca = MainMenu.PrepareConnectedAnimation("connect", e.ClickedItem, "ItemTitle");
+            Frame.Navigate(SelectedMenuItem.Page, null);
         }
     }
 }

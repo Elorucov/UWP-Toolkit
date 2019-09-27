@@ -29,12 +29,12 @@ namespace Elorucov.Demos.Toolkit.Pages {
             base.OnNavigatedTo(e);
 
             ConnectedAnimation ca = ConnectedAnimationService.GetForCurrentView().GetAnimation("connect");
-            if (ca != null) ca.TryStart(Root);
+            if (ca != null) ca.TryStart(PageTitle);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
             base.OnNavigatingFrom(e);
-            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("connectback", Root);
+            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("connectback", PageTitle);
         }
 
         private void btn01(object sender, RoutedEventArgs e) {
@@ -47,9 +47,9 @@ namespace Elorucov.Demos.Toolkit.Pages {
             m.Show();
         }
 
-        private void btn03(object sender, RoutedEventArgs e) {
-            var hm = new Dialogs.SampleHalfModal1();
-            hm.Show();
-        }
+        //private void btn03(object sender, RoutedEventArgs e) {
+        //    var hm = new Dialogs.SampleHalfModal1();
+        //    hm.Show();
+        //}
     }
 }

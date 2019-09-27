@@ -31,13 +31,13 @@ namespace Elorucov.Demos.Toolkit.Pages {
             base.OnNavigatedTo(e);
 
             ConnectedAnimation ca = ConnectedAnimationService.GetForCurrentView().GetAnimation("connect");
-            if (ca != null) ca.TryStart(Root);
+            if (ca != null) ca.TryStart(PageTitle);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
             base.OnNavigatingFrom(e);
             sp.Background = null;
-            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("connectback", Root);
+            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("connectback", PageTitle);
         }
 
         private async void StackPanel_Loaded(object sender, RoutedEventArgs e) {

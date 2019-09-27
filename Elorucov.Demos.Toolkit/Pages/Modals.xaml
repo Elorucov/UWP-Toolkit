@@ -8,10 +8,20 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MaxWidth="960">
 
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <DrillInNavigationTransitionInfo/>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
     <StackPanel Margin="12" HorizontalAlignment="Left">
-        <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,12" Text="Modal &amp; dialogs"/>
+        <TextBlock x:Name="PageTitle" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,12" Text="Modal &amp; dialogs"/>
         <Button Margin="0,0,0,8" Content="Modal" Click="btn01"/>
         <Button Margin="0,0,0,8" Content="Modal with long text" Click="btn02"/>
-        <Button Margin="0,0,0,8" Content="Half modal" Click="btn03"/>
+        <!--<Button Margin="0,0,0,8" Content="Half modal" Click="btn03"/>-->
     </StackPanel>
 </Page>
