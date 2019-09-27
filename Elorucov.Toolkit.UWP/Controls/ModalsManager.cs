@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,13 +13,16 @@ namespace Elorucov.Toolkit.UWP.Controls {
 
         internal static void Add(IModal modal) {
             _openedModals.Add(modal);
-            if(!isEventRegistered) {
+            Debug.WriteLine($"ModalsManager: Opened {modal.GetHashCode()}.");
+            if (!isEventRegistered) {
                 SystemNavigationManager.GetForCurrentView().BackRequested += ModalsManager_BackRequested;
+                isEventRegistered = true;
             }
         }
 
         internal static void Remove(IModal modal) {
             _openedModals.Remove(modal);
+            Debug.WriteLine($"ModalsManager: Closed {modal.GetHashCode()}.");
         }
 
         private static void ModalsManager_BackRequested(object sender, BackRequestedEventArgs e) {
