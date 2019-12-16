@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="Elorucov.Demos.Toolkit.Pages.AvatarSamples"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Elorucov.Demos.Toolkit.Pages"
+    xmlns:elor="using:Elorucov.Toolkit.UWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" MaxWidth="960">
+
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <DrillInNavigationTransitionInfo/>
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+
+    <StackPanel Margin="12">
+        <TextBlock x:Name="PageTitle" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,12" Text="Avatar"/>
+        <elor:Avatar x:Name="Ava" Width="48" Height="48" HorizontalAlignment="Left" DisplayName="{Binding Text, ElementName=DisName}" Image="{Binding Text, ElementName=AvaImage}" Click="AvaClicked"/>
+        <TextBox x:Name="DisName" Margin="0,12,0,0" Header="Display Name:" Text="John Smith"/>
+        <TextBox x:Name="AvaImage" Margin="0,12,0,0" Header="Avatar url:" Text="https://pp.userapi.com/c847021/v847021629/205e9e/n8E9p-bmhAM.jpg"/>
+        <StackPanel Margin="0,12,0,0" Orientation="Horizontal">
+            <TextBlock Text="Height"/>
+            <Button Margin="8,0,0,0" Width="48" Content="+4" Click="IncreaseHeight"/>
+            <Button Margin="8,0,0,0" Width="48" Content="-4" Click="DecreaseHeight"/>
+        </StackPanel>
+    </StackPanel>
+</Page>

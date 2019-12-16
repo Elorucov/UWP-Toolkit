@@ -128,6 +128,9 @@
     <Compile Include="Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AvatarSamples.xaml.cs">
+      <DependentUpon>AvatarSamples.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MediaSliderSample.xaml.cs">
       <DependentUpon>MediaSliderSample.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AvatarSamples.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

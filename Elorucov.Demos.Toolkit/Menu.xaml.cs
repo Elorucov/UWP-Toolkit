@@ -55,12 +55,12 @@ namespace Elorucov.Demos.Toolkit {
                 PreviewImage = new Uri("ms-appx:///Assets/Previews/Modals.png"),
                 Page = typeof(Pages.Modals)
             },
-            //new MenuItem {
-            //    Title = "Hint flyout",
-            //    Description = "Description",
-            //    PreviewImage = new Uri("https://sun1-23.userapi.com/c849432/v849432217/18ad60/Vls0Q3sb1UY.jpg"),
-            //    Page = typeof(Pages.Modals)
-            //},
+            new MenuItem {
+                Title = "Avatar",
+                Description = "A PersonPicture analog",
+                PreviewImage = new Uri("https://sun1-23.userapi.com/c849432/v849432217/18ad60/Vls0Q3sb1UY.jpg"),
+                Page = typeof(Pages.AvatarSamples)
+            },
         };
 
         public Menu() {
