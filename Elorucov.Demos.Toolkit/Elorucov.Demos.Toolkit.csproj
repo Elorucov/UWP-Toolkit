@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\menuitem.png" />
+    <Content Include="Assets\Previews\Avatar.png" />
     <Content Include="Assets\Previews\MediaSlider.png" />
     <Content Include="Assets\Previews\Modals.png" />
     <Content Include="Assets\Previews\UserAvatars.png" />

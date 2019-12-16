@@ -22,8 +22,8 @@
     <StackPanel Margin="12">
         <TextBlock x:Name="PageTitle" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,12" Text="Avatar"/>
         <elor:Avatar x:Name="Ava" Width="48" Height="48" HorizontalAlignment="Left" DisplayName="{Binding Text, ElementName=DisName}" Image="{Binding Text, ElementName=AvaImage}" Click="AvaClicked"/>
-        <TextBox x:Name="DisName" Margin="0,12,0,0" Header="Display Name:" Text="John Smith"/>
-        <TextBox x:Name="AvaImage" Margin="0,12,0,0" Header="Avatar url:" Text="https://pp.userapi.com/c847021/v847021629/205e9e/n8E9p-bmhAM.jpg"/>
+        <TextBox x:Name="DisName" Margin="0,12,0,0" Header="Display Name:" Text="Jason Statham"/>
+        <TextBox x:Name="AvaImage" Margin="0,12,0,0" Header="Avatar url:" Text="https://sun9-61.userapi.com/c200420/v200420614/11d97/VOmPL1DmGuU.jpg"/>
         <StackPanel Margin="0,12,0,0" Orientation="Horizontal">
             <TextBlock Text="Height"/>
             <Button Margin="8,0,0,0" Width="48" Content="+4" Click="IncreaseHeight"/>
