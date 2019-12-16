@@ -35,6 +35,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
             set { SetValue(DisplayNameProperty, value); }
         }
 
+        public List<Uri> IgnoredLinks { get; } = new List<Uri>();
+
         public int Size { get { return (int)Math.Min(ActualWidth, ActualHeight); } }
 
         #endregion
@@ -63,6 +65,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             BackgroundBorder = (Border)GetTemplateChild(nameof(BackgroundBorder));
             AvatarImage = (Image)GetTemplateChild(nameof(AvatarImage));
             AvatarInitials = (TextBlock)GetTemplateChild(nameof(AvatarInitials));
+
             SetBackground();
             SetInitials();
             SetImage();
@@ -95,18 +98,21 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         private void SetImage() {
+            BackgroundBorder.Visibility = Visibility.Visible;
             if (AvatarImage == null) return;
-            if (Image != null) {
+            if (Image != null && !IgnoredLinks.Contains(Image)) {
                 AvatarImage.Visibility = Visibility.Visible;
-                AvatarImageSource = new BitmapImage {
+                BitmapImage bi = new BitmapImage {
                     UriSource = Image, DecodePixelType = DecodePixelType.Logical,
                 };
+                bi.ImageOpened += (a, b) => BackgroundBorder.Visibility = Visibility.Collapsed;
+                bi.ImageFailed += (a, b) => BackgroundBorder.Visibility = Visibility.Visible;
+                AvatarImageSource = bi;
+
                 ChangeDecodeSize();
                 AvatarImage.Source = AvatarImageSource;
-                BackgroundBorder.Visibility = Visibility.Collapsed;
             } else {
                 AvatarImage.Visibility = Visibility.Collapsed;
-                BackgroundBorder.Visibility = Visibility.Visible;
             }
         }
 
