@@ -101,6 +101,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         private void SetImage() {
+            if (BackgroundBorder == null || AvatarImage == null) return;
             BackgroundBorder.Visibility = Visibility.Visible;
             if (AvatarImage == null) return;
             if (ImageUri != null && !IgnoredLinks.Contains(ImageUri)) {
