@@ -72,6 +72,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
 
         public static void AddUriForIgnore(Uri uri) {
             if (IgnoredLinks.Contains(uri)) throw new ArgumentException("Uri already exist");
+            IgnoredLinks.Add(uri);
         }
 
         #region Private methods
