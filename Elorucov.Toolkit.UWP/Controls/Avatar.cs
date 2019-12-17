@@ -19,12 +19,12 @@ namespace Elorucov.Toolkit.UWP.Controls {
 
         #region Properties
 
-        public static readonly DependencyProperty ImageProperty =
-        DependencyProperty.Register(nameof(Image), typeof(Uri), typeof(Avatar), new PropertyMetadata(default(Uri)));
+        public static readonly DependencyProperty ImageUriProperty =
+        DependencyProperty.Register(nameof(ImageUri), typeof(Uri), typeof(Avatar), new PropertyMetadata(default(Uri)));
 
-        public Uri Image {
-            get { return (Uri)GetValue(ImageProperty); }
-            set { SetValue(ImageProperty, value); }
+        public Uri ImageUri {
+            get { return (Uri)GetValue(ImageUriProperty); }
+            set { SetValue(ImageUriProperty, value); }
         }
 
         public static readonly DependencyProperty DisplayNameProperty =
@@ -34,8 +34,6 @@ namespace Elorucov.Toolkit.UWP.Controls {
             get { return (string)GetValue(DisplayNameProperty); }
             set { SetValue(DisplayNameProperty, value); }
         }
-
-        public List<Uri> IgnoredLinks { get; } = new List<Uri>();
 
         public int Size { get { return (int)Math.Min(ActualWidth, ActualHeight); } }
 
@@ -48,12 +46,13 @@ namespace Elorucov.Toolkit.UWP.Controls {
         TextBlock AvatarInitials;
         Image AvatarImage;
         BitmapImage AvatarImageSource;
+        private static List<Uri> IgnoredLinks { get; } = new List<Uri>();
 
         #endregion
 
         public Avatar() {
             this.DefaultStyleKey = typeof(Avatar);
-            RegisterPropertyChangedCallback(ImageProperty, (a, b) => { SetImage(); });
+            RegisterPropertyChangedCallback(ImageUriProperty, (a, b) => { SetImage(); });
             RegisterPropertyChangedCallback(DisplayNameProperty, (a, b) => { SetInitials(); });
             RegisterPropertyChangedCallback(BackgroundProperty, (a, b) => { SetBackground(); });
             SizeChanged += (a, b) => ChangeDecodeSize();
@@ -69,6 +68,10 @@ namespace Elorucov.Toolkit.UWP.Controls {
             SetBackground();
             SetInitials();
             SetImage();
+        }
+
+        public static void AddUriForIgnore(Uri uri) {
+            if (IgnoredLinks.Contains(uri)) throw new ArgumentException("Uri already exist");
         }
 
         #region Private methods
@@ -100,10 +103,10 @@ namespace Elorucov.Toolkit.UWP.Controls {
         private void SetImage() {
             BackgroundBorder.Visibility = Visibility.Visible;
             if (AvatarImage == null) return;
-            if (Image != null && !IgnoredLinks.Contains(Image)) {
+            if (ImageUri != null && !IgnoredLinks.Contains(ImageUri)) {
                 AvatarImage.Visibility = Visibility.Visible;
                 BitmapImage bi = new BitmapImage {
-                    UriSource = Image, DecodePixelType = DecodePixelType.Logical,
+                    UriSource = ImageUri, DecodePixelType = DecodePixelType.Logical,
                 };
                 bi.ImageOpened += (a, b) => BackgroundBorder.Visibility = Visibility.Collapsed;
                 bi.ImageFailed += (a, b) => BackgroundBorder.Visibility = Visibility.Visible;

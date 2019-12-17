@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Elorucov.Toolkit.UWP.Controls;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,10 +33,10 @@ namespace Elorucov.Demos.Toolkit.Pages {
             ConnectedAnimation ca = ConnectedAnimationService.GetForCurrentView().GetAnimation("connect");
             if (ca != null) ca.TryStart(PageTitle);
 
-            Ava.IgnoredLinks.Add(new Uri("https://vk.com/images/deactivated_200.gif"));
-            Ava.IgnoredLinks.Add(new Uri("https://vk.com/images/camera_200.png"));
-            Ava.IgnoredLinks.Add(new Uri("https://vk.com/images/community_200.png"));
-            Ava.IgnoredLinks.Add(new Uri("https://vk.com/images/icons/im_multichat_200.png"));
+            Avatar.AddUriForIgnore(new Uri("https://vk.com/images/deactivated_200.gif"));
+            Avatar.AddUriForIgnore(new Uri("https://vk.com/images/camera_200.png"));
+            Avatar.AddUriForIgnore(new Uri("https://vk.com/images/community_200.png"));
+            Avatar.AddUriForIgnore(new Uri("https://vk.com/images/icons/im_multichat_200.png"));
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
