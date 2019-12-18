@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.System.Profile;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -11,6 +12,7 @@ using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Shapes;
 
 // The Templated Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234235
 
@@ -46,6 +48,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         TextBlock AvatarInitials;
         Image AvatarImage;
         BitmapImage AvatarImageSource;
+        Ellipse AvatarImageFallback;
         private static List<Uri> IgnoredLinks { get; } = new List<Uri>();
 
         #endregion
@@ -64,6 +67,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             BackgroundBorder = (Border)GetTemplateChild(nameof(BackgroundBorder));
             AvatarImage = (Image)GetTemplateChild(nameof(AvatarImage));
             AvatarInitials = (TextBlock)GetTemplateChild(nameof(AvatarInitials));
+            AvatarImageFallback = (Ellipse)GetTemplateChild(nameof(AvatarImageFallback));
 
             SetBackground();
             SetInitials();
@@ -71,7 +75,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         public static void AddUriForIgnore(Uri uri) {
-            if (IgnoredLinks.Contains(uri)) throw new ArgumentException("Uri already exist");
+            if (IgnoredLinks.Contains(uri)) return;
             IgnoredLinks.Add(uri);
         }
 
@@ -90,7 +94,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             if (AvatarInitials == null) return;
             if (!String.IsNullOrEmpty(DisplayName)) {
                 string result = "";
-                string[] split = DisplayName.Split(' ');
+                string[] split = DisplayName.Trim().Split(' ');
                 for (int i = 0; i < Math.Min(2, split.Length); i++) {
                     result += split[i][0];
                 }
@@ -106,7 +110,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             BackgroundBorder.Visibility = Visibility.Visible;
             if (AvatarImage == null) return;
             if (ImageUri != null && !IgnoredLinks.Contains(ImageUri)) {
-                AvatarImage.Visibility = Visibility.Visible;
+                ChangeImageVisibility(Visibility.Visible);
                 BitmapImage bi = new BitmapImage {
                     UriSource = ImageUri, DecodePixelType = DecodePixelType.Logical,
                 };
@@ -115,9 +119,27 @@ namespace Elorucov.Toolkit.UWP.Controls {
                 AvatarImageSource = bi;
 
                 ChangeDecodeSize();
-                AvatarImage.Source = AvatarImageSource;
+                SetImageSource();
             } else {
-                AvatarImage.Visibility = Visibility.Collapsed;
+                ChangeImageVisibility(Visibility.Collapsed);
+            }
+        }
+
+        private void ChangeImageVisibility(Visibility visibility) {
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") {
+                AvatarImageFallback.Visibility = visibility;
+            } else {
+                BackgroundBorder.Visibility = visibility;
+            }
+        }
+
+        private void SetImageSource() {
+            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") {
+                AvatarImageFallback.Fill = new ImageBrush {
+                    Stretch = Stretch.UniformToFill, ImageSource = AvatarImageSource
+                };
+            } else {
+                AvatarImage.Source = AvatarImageSource;
             }
         }
 

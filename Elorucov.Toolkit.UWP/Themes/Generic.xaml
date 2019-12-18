@@ -120,9 +120,10 @@
                 <ControlTemplate TargetType="controls:Avatar">
                     <Viewbox Stretch="Uniform">
                         <Grid x:Name="AvatarContainer" Width="48" Height="48" CornerRadius="24">
-                            <Border x:Name="BackgroundBorder" Background="#7F7F7F"/>
+                            <Border x:Name="BackgroundBorder" Background="#7F7F7F" CornerRadius="24"/>
                             <TextBlock x:Name="AvatarInitials" TextAlignment="Center" VerticalAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="21" FontSize="20"/>
                             <Image x:Name="AvatarImage" Stretch="UniformToFill"/>
+                            <Ellipse x:Name="AvatarImageFallback" Width="48" Height="48"/>
                         </Grid>
                     </Viewbox>
                 </ControlTemplate>
