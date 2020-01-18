@@ -82,6 +82,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         #region Private methods
 
         private void SetBackground() {
+            if (BackgroundBorder == null) return;
             if (Background != null) {
                 BackgroundBorder.Background = Background;
             } else {
@@ -96,6 +97,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
                 string result = "";
                 string[] split = DisplayName.Trim().Split(' ');
                 for (int i = 0; i < Math.Min(2, split.Length); i++) {
+                    if (split[i].Length == 0) continue;
                     result += split[i][0];
                 }
                 AvatarInitials.Text = result.ToUpper();
@@ -129,7 +131,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") {
                 AvatarImageFallback.Visibility = visibility;
             } else {
-                BackgroundBorder.Visibility = visibility;
+                AvatarImage.Visibility = visibility;
             }
         }
 
