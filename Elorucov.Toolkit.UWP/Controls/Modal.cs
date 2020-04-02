@@ -59,23 +59,23 @@ namespace Elorucov.Toolkit.UWP.Controls {
         #region Properties
 
         public static readonly DependencyProperty FullSizeDesiredProperty =
-            DependencyProperty.Register("FullSizeDesired", typeof(bool), typeof(Modal), new PropertyMetadata(default(bool)));
+            DependencyProperty.Register(nameof(FullSizeDesired), typeof(bool), typeof(Modal), new PropertyMetadata(default(bool)));
 
         public bool FullSizeDesired {
             get { return (bool)GetValue(FullSizeDesiredProperty); }
             set { SetValue(FullSizeDesiredProperty, value); }
         }
 
-        public static readonly DependencyProperty CornerRadiusProperty =
-            DependencyProperty.Register("CornerRadius", typeof(double), typeof(Modal), new PropertyMetadata(0d));
+        public static readonly DependencyProperty CornersRadiusProperty =
+            DependencyProperty.Register(nameof(CornersRadius), typeof(double), typeof(Modal), new PropertyMetadata(0d));
 
-        public double CornerRadius {
-            get { return (double)GetValue(CornerRadiusProperty); }
-            set { SetValue(CornerRadiusProperty, value); }
+        public double CornersRadius {
+            get { return (double)GetValue(CornersRadiusProperty); }
+            set { SetValue(CornersRadiusProperty, value); }
         }
 
         public static readonly DependencyProperty DropShadowProperty =
-            DependencyProperty.Register("DropShadow", typeof(bool), typeof(Modal), new PropertyMetadata(default(bool)));
+            DependencyProperty.Register(nameof(DropShadow), typeof(bool), typeof(Modal), new PropertyMetadata(default(bool)));
 
         public bool DropShadow {
             get { return (bool)GetValue(DropShadowProperty); }
@@ -83,7 +83,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(Modal), new PropertyMetadata(""));
+            DependencyProperty.Register(nameof(Title), typeof(string), typeof(Modal), new PropertyMetadata(""));
 
         public string Title {
             get { return (string)GetValue(TitleProperty); }
@@ -91,7 +91,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         public static readonly DependencyProperty CloseButtonVisibilityProperty =
-            DependencyProperty.Register("CloseButtonVisibility", typeof(Visibility), typeof(Modal), new PropertyMetadata(default(Visibility)));
+            DependencyProperty.Register(nameof(CloseButtonVisibility), typeof(Visibility), typeof(Modal), new PropertyMetadata(default(Visibility)));
 
         public Visibility CloseButtonVisibility {
             get { return (Visibility)GetValue(CloseButtonVisibilityProperty); }
@@ -106,7 +106,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             popup.Child = this;
             RegisterPropertyChangedCallback(FullSizeDesiredProperty, (a, b) => { if (WasShowed) Resize(); });
             RegisterPropertyChangedCallback(MaxWidthProperty, (a, b) => { if (WasShowed) Resize(); });
-            RegisterPropertyChangedCallback(CornerRadiusProperty, ChangeShadowCornerRadius);
+            RegisterPropertyChangedCallback(CornersRadiusProperty, ChangeShadowCornersRadius);
             RegisterPropertyChangedCallback(MaxWidthProperty, ChangeMaxWidth);
             RegisterPropertyChangedCallback(MarginProperty, ChangeMargin);
             RegisterPropertyChangedCallback(DropShadowProperty, (a, b) => {
@@ -147,7 +147,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
                 if (TitleText != null) TitleText.Visibility = String.IsNullOrEmpty(Title) ? Visibility.Collapsed : Visibility.Visible;
                 ChangeMaxWidth(this, MaxWidthProperty);
                 ChangeMargin(this, MarginProperty);
-                UpdateCornerRadius(CornerRadius);
+                UpdateCornersRadius(CornersRadius);
                 Animate(Windows.UI.Composition.AnimationDirection.Normal, animationDuration);
                 SetFocus(ModalContent);
             };
@@ -219,9 +219,9 @@ namespace Elorucov.Toolkit.UWP.Controls {
             DialogWrapper.Margin = new Thickness(0, top, 0, bottom);
         }
 
-        private void ChangeShadowCornerRadius(DependencyObject sender, DependencyProperty dp) {
+        private void ChangeShadowCornersRadius(DependencyObject sender, DependencyProperty dp) {
             double r = (double)GetValue(dp);
-            UpdateCornerRadius(r);
+            UpdateCornersRadius(r);
         }
 
         bool dontUpdateMaxWidth = false;
@@ -252,7 +252,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             }
         }
 
-        private void UpdateCornerRadius(double r) {
+        private void UpdateCornersRadius(double r) {
             if(ModalContent != null && ShadowBorder != null) {
                 ModalContent.CornerRadius = new CornerRadius(r);
                 ShadowBorder.RadiusX = r;
