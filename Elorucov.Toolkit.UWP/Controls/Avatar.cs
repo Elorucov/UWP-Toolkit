@@ -44,9 +44,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
         #region Private fields
 
         Grid AvatarContainer;
-        Border BackgroundBorder;
+        Ellipse BackgroundBorder;
         TextBlock AvatarInitials;
-        Image AvatarImage;
         BitmapImage AvatarImageSource;
         Ellipse AvatarImageFallback;
         private static List<Uri> IgnoredLinks { get; } = new List<Uri>();
@@ -64,8 +63,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         protected override void OnApplyTemplate() {
             base.OnApplyTemplate();
             AvatarContainer = (Grid)GetTemplateChild(nameof(AvatarContainer));
-            BackgroundBorder = (Border)GetTemplateChild(nameof(BackgroundBorder));
-            AvatarImage = (Image)GetTemplateChild(nameof(AvatarImage));
+            BackgroundBorder = (Ellipse)GetTemplateChild(nameof(BackgroundBorder));
             AvatarInitials = (TextBlock)GetTemplateChild(nameof(AvatarInitials));
             AvatarImageFallback = (Ellipse)GetTemplateChild(nameof(AvatarImageFallback));
 
@@ -84,10 +82,10 @@ namespace Elorucov.Toolkit.UWP.Controls {
         private void SetBackground() {
             if (BackgroundBorder == null) return;
             if (Background != null) {
-                BackgroundBorder.Background = Background;
+                BackgroundBorder.Fill = Background;
             } else {
                 string i = (String.IsNullOrEmpty(DisplayName)) ? "" : DisplayName;
-                BackgroundBorder.Background = GetColor(RecursiveDivide(i.GetHashCode(), 2, 10));
+                BackgroundBorder.Fill = GetColor(RecursiveDivide(i.GetHashCode(), 2, 10));
             }
         }
 
@@ -108,9 +106,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         private void SetImage() {
-            if (BackgroundBorder == null || AvatarImage == null) return;
+            if (BackgroundBorder == null || AvatarImageFallback == null) return;
             BackgroundBorder.Visibility = Visibility.Visible;
-            if (AvatarImage == null) return;
             if (ImageUri != null && !IgnoredLinks.Contains(ImageUri)) {
                 ChangeImageVisibility(Visibility.Visible);
                 BitmapImage bi = new BitmapImage {
@@ -128,21 +125,14 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         private void ChangeImageVisibility(Visibility visibility) {
-            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") {
-                AvatarImageFallback.Visibility = visibility;
-            } else {
-                AvatarImage.Visibility = visibility;
-            }
+            AvatarImageFallback.Visibility = visibility;
         }
 
         private void SetImageSource() {
-            if (AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile") {
-                AvatarImageFallback.Fill = new ImageBrush {
-                    Stretch = Stretch.UniformToFill, ImageSource = AvatarImageSource
-                };
-            } else {
-                AvatarImage.Source = AvatarImageSource;
-            }
+            AvatarImageFallback.Fill = new ImageBrush {
+                Stretch = Stretch.UniformToFill,
+                ImageSource = AvatarImageSource
+            };
         }
 
         private void ChangeDecodeSize() {

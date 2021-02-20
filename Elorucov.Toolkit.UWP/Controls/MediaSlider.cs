@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
@@ -172,30 +173,34 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         private void SetupSlider(object a = null, object b = null) {
-            if(Root != null) {
-                double w = Root.ActualWidth;
-                double d = Duration.TotalMilliseconds;
-                double p = Position.TotalMilliseconds;
-                if (d > 0) {
-                    Thumb.Visibility = Visibility.Visible;
-                    double pl = w / d * p;
-                    PosLine.Width = pl;
+            try {
+                if (Root != null) {
+                    double w = Root.ActualWidth;
+                    double d = Duration.TotalMilliseconds;
+                    double p = Position.TotalMilliseconds;
+                    if (d > 0) {
+                        Thumb.Visibility = Visibility.Visible;
+                        double pl = w / d * p;
+                        PosLine.Width = pl;
 
-                    if (!isPressing) {
-                        double t = Thumb.Width;
-                        double plt = (w - t) / d * p;
-                        Canvas.SetLeft(Thumb, plt);
+                        if (!isPressing) {
+                            double t = Thumb.Width;
+                            double plt = (w - t) / d * p;
+                            Canvas.SetLeft(Thumb, plt);
+                        }
+                    } else {
+                        Thumb.Visibility = Visibility.Collapsed;
                     }
-                } else {
-                    Thumb.Visibility = Visibility.Collapsed;
+                    if (BufferingProgress >= 0 && BufferingProgress <= 1) {
+                        BufLine.Width = w / 1 * BufferingProgress;
+                    } else if (BufferingProgress < 0) {
+                        BufLine.Width = 0;
+                    } else if (BufferingProgress > 1) {
+                        BufLine.Width = w;
+                    }
                 }
-                if(BufferingProgress >= 0 && BufferingProgress <= 1) {
-                    BufLine.Width = w / 1 * BufferingProgress;
-                } else if(BufferingProgress < 0) {
-                    BufLine.Width = 0;
-                } else if (BufferingProgress > 1) {
-                    BufLine.Width = w;
-                }
+            } catch (Exception ex) {
+                Debug.WriteLine($"SetupSlider error: (0x{ex.HResult.ToString("x8")}): {ex.Message.Trim()}");
             }
         }
     }
