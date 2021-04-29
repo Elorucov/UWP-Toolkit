@@ -125,6 +125,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\OverlayModalSample.xaml.cs">
+      <DependentUpon>OverlayModalSample.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\SampleModal1.xaml.cs">
       <DependentUpon>SampleModal1.xaml</DependentUpon>
     </Compile>
@@ -174,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\OverlayModalSample.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\SampleModal1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

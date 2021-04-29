@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Elorucov.Toolkit.UWP.Controls;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,9 +48,9 @@ namespace Elorucov.Demos.Toolkit.Pages {
             m.Show();
         }
 
-        //private void btn03(object sender, RoutedEventArgs e) {
-        //    var hm = new Dialogs.SampleHalfModal1();
-        //    hm.Show();
-        //}
+        private void btn03(object sender, RoutedEventArgs e) {
+            var o = new Dialogs.OverlayModalSample();
+            o.Show();
+        }
     }
 }

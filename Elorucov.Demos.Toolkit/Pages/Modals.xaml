@@ -22,6 +22,6 @@
         <TextBlock x:Name="PageTitle" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="0,0,0,12" Text="Modal &amp; dialogs"/>
         <Button Margin="0,0,0,8" Content="Modal" Click="btn01"/>
         <Button Margin="0,0,0,8" Content="Modal with long text" Click="btn02"/>
-        <!--<Button Margin="0,0,0,8" Content="Half modal" Click="btn03"/>-->
+        <Button Margin="0,0,0,8" Content="Overlay modal" Click="btn03"/>
     </StackPanel>
 </Page>

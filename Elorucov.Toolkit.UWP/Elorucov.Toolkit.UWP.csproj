@@ -125,8 +125,8 @@
     <Compile Include="Controls\MediaSlider.cs" />
     <Compile Include="Controls\Modal.cs" />
     <Compile Include="Controls\ModalsManager.cs" />
+    <Compile Include="Controls\OverlayModal.cs" />
     <Compile Include="Controls\UserAvatars.cs" />
-    <Compile Include="Helpers\InteractionTrackerOwner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Elorucov.Toolkit.UWP.rd.xml" />
   </ItemGroup>

@@ -50,7 +50,7 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}"/>
+                                        <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
@@ -125,6 +125,20 @@
                             <Ellipse x:Name="AvatarImageFallback" Width="48" Height="48"/>
                         </Grid>
                     </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="controls:OverlayModal">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:OverlayModal">
+                    <ContentPresenter x:Name="OverlayModalFrame" 
+                                      Background="{TemplateBinding Background}"
+                                      Content="{TemplateBinding Content}"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}">
+                    </ContentPresenter>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
