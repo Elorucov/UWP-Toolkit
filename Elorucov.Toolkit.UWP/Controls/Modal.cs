@@ -91,6 +91,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
 
         public Modal() {
             this.DefaultStyleKey = typeof(Modal);
+            CheckOverrideStyles();
             popup = new Popup();
             popup.Child = this;
             RegisterPropertyChangedCallback(FullSizeDesiredProperty, (a, b) => { if (WasShowed) Resize(); });
@@ -104,6 +105,15 @@ namespace Elorucov.Toolkit.UWP.Controls {
             RegisterPropertyChangedCallback(TitleProperty, (a, b) => {
                 if (TitleText != null) TitleText.Visibility = String.IsNullOrEmpty(Title) ? Visibility.Collapsed : Visibility.Visible;
             });
+        }
+
+        private void CheckOverrideStyles() {
+            foreach (var resource in Application.Current.Resources) {
+                if (resource.Value is Style style && style.TargetType == typeof(Modal) && resource.Key.GetType() != typeof(string)) {
+                    Style = style;
+                    break;
+                }
+            }
         }
 
         protected override void OnApplyTemplate() {
