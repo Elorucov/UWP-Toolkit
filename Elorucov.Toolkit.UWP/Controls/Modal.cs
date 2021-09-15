@@ -87,6 +87,14 @@ namespace Elorucov.Toolkit.UWP.Controls {
             set { SetValue(CloseButtonVisibilityProperty, value); }
         }
 
+        public static readonly DependencyProperty LayerBrushProperty =
+            DependencyProperty.Register(nameof(LayerBrush), typeof(Brush), typeof(Modal), new PropertyMetadata(default(Brush)));
+
+        public Brush LayerBrush {
+            get { return (Brush)GetValue(LayerBrushProperty); }
+            set { SetValue(LayerBrushProperty, value); }
+        }
+
         #endregion
 
         public Modal() {

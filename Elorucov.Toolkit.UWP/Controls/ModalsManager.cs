@@ -32,5 +32,9 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         public static bool HaveOpenedModals { get { return _openedModals.Count > 0; } }
+
+        public static void CloseLastOpenedModal() {
+            _openedModals.LastOrDefault()?.Hide();
+        }
     }
 }

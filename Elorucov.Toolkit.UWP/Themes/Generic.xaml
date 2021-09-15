@@ -6,6 +6,7 @@
 
     <Style TargetType="controls:Modal">
         <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"/>
+        <Setter Property="LayerBrush" Value="#7f000000"/>
         <Setter Property="Padding" Value="16"/>
         <Setter Property="MaxWidth" Value="480"/>
         <Setter Property="IsTabStop" Value="True"/>
@@ -37,7 +38,7 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Border x:Name="Layer" Background="#7f000000"/>
+                        <Border x:Name="Layer" Background="{TemplateBinding LayerBrush}"/>
                         <Border x:Name="AnimationBorder">
                             <Grid x:Name="DialogWrapper">
                                 <Rectangle x:Name="ShadowBorder" MaxWidth="{TemplateBinding MaxWidth}" 
