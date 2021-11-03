@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Elorucov.Toolkit.UWP")]
-[assembly: AssemblyDescription("Elorucov.Toolkit.UWP")]
+[assembly: AssemblyDescription("Common UWP controls for ELOR's projects")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Elorucov")]
+[assembly: AssemblyCompany("ELOR")]
 [assembly: AssemblyProduct("Elorucov.Toolkit.UWP")]
 [assembly: AssemblyCopyright("Copyright © 2019-2021 ELOR (ex. Elorucov)")]
 [assembly: AssemblyTrademark("")]
@@ -24,6 +24,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.9.17.*")]
-[assembly: AssemblyFileVersion("0.9.17.0")]
+[assembly: AssemblyVersion("0.9.19.*")]
+[assembly: AssemblyFileVersion("0.9.19.0")]
 [assembly: ComVisible(false)]

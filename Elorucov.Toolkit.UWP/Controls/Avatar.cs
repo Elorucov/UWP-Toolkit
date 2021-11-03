@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.System.Profile;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Shapes;
@@ -27,6 +21,14 @@ namespace Elorucov.Toolkit.UWP.Controls {
         public Uri ImageUri {
             get { return (Uri)GetValue(ImageUriProperty); }
             set { SetValue(ImageUriProperty, value); }
+        }
+
+        public static readonly DependencyProperty ImageSourceProperty =
+        DependencyProperty.Register(nameof(ImageSource), typeof(BitmapImage), typeof(Avatar), new PropertyMetadata(default(BitmapImage)));
+
+        public BitmapImage ImageSource {
+            get { return (BitmapImage)GetValue(ImageSourceProperty); }
+            set { SetValue(ImageSourceProperty, value); }
         }
 
         public static readonly DependencyProperty DisplayNameProperty =
@@ -55,6 +57,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         public Avatar() {
             this.DefaultStyleKey = typeof(Avatar);
             RegisterPropertyChangedCallback(ImageUriProperty, (a, b) => { SetImage(); });
+            RegisterPropertyChangedCallback(ImageSourceProperty, (a, b) => { SetImage(); });
             RegisterPropertyChangedCallback(DisplayNameProperty, (a, b) => { SetInitials(); });
             RegisterPropertyChangedCallback(BackgroundProperty, (a, b) => { SetBackground(); });
             SizeChanged += (a, b) => ChangeDecodeSize();
@@ -108,11 +111,17 @@ namespace Elorucov.Toolkit.UWP.Controls {
         private void SetImage() {
             if (BackgroundBorder == null || AvatarImageFallback == null) return;
             BackgroundBorder.Visibility = Visibility.Visible;
-            if (ImageUri != null && !IgnoredLinks.Contains(ImageUri)) {
+            if ((ImageUri != null || ImageSource != null) && !IgnoredLinks.Contains(ImageUri)) {
                 ChangeImageVisibility(Visibility.Visible);
-                BitmapImage bi = new BitmapImage {
-                    UriSource = ImageUri, DecodePixelType = DecodePixelType.Logical,
-                };
+                BitmapImage bi = null;
+                if (ImageSource != null) {
+                    bi = ImageSource;
+                } else if (ImageUri != null) {
+                    bi = new BitmapImage {
+                        UriSource = ImageUri,
+                        DecodePixelType = DecodePixelType.Logical,
+                    };
+                }
                 bi.ImageOpened += (a, b) => BackgroundBorder.Visibility = Visibility.Collapsed;
                 bi.ImageFailed += (a, b) => BackgroundBorder.Visibility = Visibility.Visible;
                 AvatarImageSource = bi;

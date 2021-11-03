@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
 using Windows.System.Profile;
 using Windows.UI;
@@ -36,10 +37,11 @@ namespace Elorucov.Toolkit.UWP.Controls {
         Border ModalContent;
         Rectangle ShadowBorder;
         TextBlock TitleText;
-        Button CloseButton;
+        ButtonBase CloseButton; // чтобы можно было заюзать HyperlinkButton в кастомных шаблонах
 
         DropShadow _shadow;
         SpriteVisual _visual;
+        bool CanUseThemeShadow { get { return ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8); } }
 
         const int animationDuration = 250;
 
@@ -63,8 +65,16 @@ namespace Elorucov.Toolkit.UWP.Controls {
             set { SetValue(CornersRadiusProperty, value); }
         }
 
+        public static readonly DependencyProperty ElevationLevelProperty =
+            DependencyProperty.Register(nameof(ElevationLevel), typeof(ushort), typeof(Modal), new PropertyMetadata((ushort)128));
+
+        public ushort ElevationLevel {
+            get { return (ushort)GetValue(ElevationLevelProperty); }
+            set { SetValue(ElevationLevelProperty, value); }
+        }
+
         public static readonly DependencyProperty DropShadowProperty =
-            DependencyProperty.Register(nameof(DropShadow), typeof(bool), typeof(Modal), new PropertyMetadata(default(bool)));
+            DependencyProperty.Register(nameof(DropShadow), typeof(bool), typeof(Modal), new PropertyMetadata(true));
 
         public bool DropShadow {
             get { return (bool)GetValue(DropShadowProperty); }
@@ -107,6 +117,9 @@ namespace Elorucov.Toolkit.UWP.Controls {
             RegisterPropertyChangedCallback(CornersRadiusProperty, ChangeShadowCornersRadius);
             RegisterPropertyChangedCallback(MaxWidthProperty, ChangeMaxWidth);
             RegisterPropertyChangedCallback(MarginProperty, ChangeMargin);
+            RegisterPropertyChangedCallback(ElevationLevelProperty, (a, b) => {
+                ModalContent.Translation = new Vector3(0, 0, ElevationLevel);
+            });
             RegisterPropertyChangedCallback(DropShadowProperty, (a, b) => {
                 if (_shadow != null) _shadow.Color = DropShadow ? Colors.Black : Colors.Transparent;
             });
@@ -134,9 +147,11 @@ namespace Elorucov.Toolkit.UWP.Controls {
             ShadowBorder = (Rectangle)GetTemplateChild("ShadowBorder");
             ModalContent = (Border)GetTemplateChild("ModalContent");
             TitleText = (TextBlock)GetTemplateChild("TitleText");
-            CloseButton = (Button)GetTemplateChild("CloseButton");
+            CloseButton = (ButtonBase)GetTemplateChild("CloseButton");
 
-            ModalContent.SizeChanged += (a, b) => {
+            ElementCompositionPreview.SetIsTranslationEnabled(AnimationBorder, true);
+
+            if (!CanUseThemeShadow) ModalContent.SizeChanged += (a, b) => {
                 ShadowBorder.Height = ModalContent.ActualHeight;
                 if(_visual != null) {
                     _visual.Size = ModalContent.RenderSize.ToVector2();
@@ -237,7 +252,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             if (!dontUpdateMaxWidth) {
                 if (ModalContent != null) {
                     ModalContent.MaxWidth = mw;
-                    ShadowBorder.MaxWidth = mw;
+                    if (!CanUseThemeShadow) ShadowBorder.MaxWidth = mw;
                     dontUpdateMaxWidth = true;
                     MaxWidth = Double.MaxValue;
                     dontUpdateMaxWidth = false;
@@ -251,7 +266,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             if (!dontUpdateMargin) {
                 if (ModalContent != null) {
                     ModalContent.Margin = t;
-                    ShadowBorder.Margin = t;
+                    if (!CanUseThemeShadow) ShadowBorder.Margin = t;
                     dontUpdateMargin = true;
                     Margin = new Thickness(0);
                     dontUpdateMargin = false;
@@ -262,30 +277,83 @@ namespace Elorucov.Toolkit.UWP.Controls {
         private void UpdateCornersRadius(double r) {
             if(ModalContent != null && ShadowBorder != null) {
                 ModalContent.CornerRadius = new CornerRadius(r);
-                ShadowBorder.RadiusX = r;
-                ShadowBorder.RadiusY = r;
-                _shadow.Mask = DropShadow ? ShadowBorder.GetAlphaMask() : null;
+                if (!CanUseThemeShadow) {
+                    ShadowBorder.RadiusX = r;
+                    ShadowBorder.RadiusY = r;
+                    _shadow.Mask = DropShadow ? ShadowBorder.GetAlphaMask() : null;
+                }
             }
         }
 
         private void SetupShadow() {
-            var compositor = ElementCompositionPreview.GetElementVisual(ModalContent).Compositor;
-            _visual = compositor.CreateSpriteVisual();
-            _visual.Size = ModalContent.RenderSize.ToVector2();
-            _visual.Offset = new Vector3(0, 0, 0);
+            if (CanUseThemeShadow) {
+                SetUpThemeShadow();
+            } else {
+                var compositor = ElementCompositionPreview.GetElementVisual(ModalContent).Compositor;
+                _visual = compositor.CreateSpriteVisual();
+                _visual.Size = ModalContent.RenderSize.ToVector2();
+                _visual.Offset = new Vector3(0, 0, 0);
 
-            _shadow = compositor.CreateDropShadow();
-            _shadow.Offset = new Vector3(0, 8, 0);
-            _shadow.BlurRadius = 32;
-            _shadow.Color = DropShadow ? Colors.Black : Colors.Transparent;
-            _shadow.Opacity = 0.5f;
-            _shadow.Mask = ShadowBorder.GetAlphaMask();
-            _visual.Shadow = _shadow;
-            ElementCompositionPreview.SetElementChildVisual(ShadowBorder, _visual);
+                _shadow = compositor.CreateDropShadow();
+                _shadow.Offset = new Vector3(0, 30, 0);
+                _shadow.BlurRadius = 42;
+                _shadow.Color = DropShadow ? Colors.Black : Colors.Transparent;
+                _shadow.Opacity = 0.1f;
+                _shadow.Mask = ShadowBorder.GetAlphaMask();
+                _visual.Shadow = _shadow;
+                ElementCompositionPreview.SetElementChildVisual(ShadowBorder, _visual);
+            }
+        }
+
+        bool isNewShadowRendered = false;
+        private void SetUpThemeShadow() {
+            if (isNewShadowRendered) return;
+            isNewShadowRendered = true;
+            DialogWrapper.Children.Remove(ShadowBorder);
+
+            ModalContent.Translation = new Vector3(0, 0, ElevationLevel);
+            if (ModalContent.Shadow == null) ModalContent.Shadow = new ThemeShadow();
         }
 
         private void Animate(Windows.UI.Composition.AnimationDirection direction, int duration) {
-            ElementCompositionPreview.SetIsTranslationEnabled(AnimationBorder, true);
+            if (Window.Current.Bounds.Width > ModalContent.MaxWidth) {
+                PerformZoomAnimation(direction, duration);
+            } else {
+                PerformSlideAnimation(direction, duration);
+            }
+        }
+
+        private void PerformZoomAnimation(Windows.UI.Composition.AnimationDirection direction, int duration) {
+            if (direction == Windows.UI.Composition.AnimationDirection.Reverse) duration = duration / 3 * 2;
+
+            Visual dvisual = ElementCompositionPreview.GetElementVisual(LayoutRoot);
+            Compositor dcompositor = dvisual.Compositor;
+
+            var size = Window.Current.Bounds;
+            float cx = (float)size.Width / 2;
+            float cy = (float)size.Height / 2;
+
+            dvisual.Scale = new Vector3(1.13f, 1.13f, 1);
+            dvisual.Opacity = 0;
+            dvisual.CenterPoint = new Vector3(cx, cy, 1);
+
+            Vector3KeyFrameAnimation vfa = dcompositor.CreateVector3KeyFrameAnimation();
+            vfa.InsertKeyFrame(1f, new Vector3(1, 1, 1));
+            vfa.Duration = TimeSpan.FromMilliseconds(duration);
+            vfa.Direction = direction;
+            vfa.IterationCount = 1;
+
+            ScalarKeyFrameAnimation sdfa = dcompositor.CreateScalarKeyFrameAnimation();
+            sdfa.InsertKeyFrame(1, 1);
+            sdfa.Duration = TimeSpan.FromMilliseconds(duration);
+            sdfa.Direction = direction;
+            sdfa.IterationCount = 1;
+
+            dvisual.StartAnimation("Scale", vfa);
+            dvisual.StartAnimation("Opacity", sdfa);
+        }
+
+        private void PerformSlideAnimation(Windows.UI.Composition.AnimationDirection direction, int duration) {
             Visual dvisual = ElementCompositionPreview.GetElementVisual(AnimationBorder);
             Compositor dcompositor = dvisual.Compositor;
 
@@ -307,7 +375,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             sfa.Direction = direction;
             sfa.IterationCount = 1;
 
-            dvisual.Opacity = IsWide ? 0 : 1; 
+            dvisual.Opacity = IsWide ? 0 : 1;
 
             ScalarKeyFrameAnimation sdfa = dcompositor.CreateScalarKeyFrameAnimation();
             sdfa.InsertKeyFrame(1, 1);

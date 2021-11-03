@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=234238
@@ -56,6 +57,12 @@ namespace Elorucov.Demos.Toolkit.Pages {
 
         private async void AvaClicked(object sender, RoutedEventArgs e) {
             await (new MessageDialog(Ava.DisplayName, "Clicked.")).ShowAsync();
+        }
+
+        private void SetImgSrc(object sender, RoutedEventArgs e) {
+            if (!Uri.IsWellFormedUriString(AvaImage.Text, UriKind.Absolute)) return;
+            BitmapImage image = new BitmapImage(new Uri(AvaImage.Text));
+            Ava.ImageSource = image;
         }
     }
 }
