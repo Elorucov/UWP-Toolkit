@@ -34,7 +34,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
         Border Layer;
         Border AnimationBorder;
         Grid DialogWrapper;
-        Border ModalContent;
+        Grid ModalContent;
+        Rectangle OuterBorder;
         Rectangle ShadowBorder;
         TextBlock TitleText;
         ButtonBase CloseButton; // чтобы можно было заюзать HyperlinkButton в кастомных шаблонах
@@ -116,6 +117,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             RegisterPropertyChangedCallback(MaxWidthProperty, (a, b) => { if (WasShowed) Resize(); });
             RegisterPropertyChangedCallback(CornersRadiusProperty, ChangeShadowCornersRadius);
             RegisterPropertyChangedCallback(MaxWidthProperty, ChangeMaxWidth);
+            RegisterPropertyChangedCallback(MaxHeightProperty, ChangeMaxHeight);
             RegisterPropertyChangedCallback(MarginProperty, ChangeMargin);
             RegisterPropertyChangedCallback(ElevationLevelProperty, (a, b) => {
                 ModalContent.Translation = new Vector3(0, 0, ElevationLevel);
@@ -126,6 +128,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             RegisterPropertyChangedCallback(TitleProperty, (a, b) => {
                 if (TitleText != null) TitleText.Visibility = String.IsNullOrEmpty(Title) ? Visibility.Collapsed : Visibility.Visible;
             });
+            RegisterPropertyChangedCallback(BorderThicknessProperty, (a, b) => ChangeBorderThickness());
         }
 
         private void CheckOverrideStyles() {
@@ -140,22 +143,27 @@ namespace Elorucov.Toolkit.UWP.Controls {
         protected override void OnApplyTemplate() {
             base.OnApplyTemplate();
 
-            LayoutRoot = (Grid)GetTemplateChild("LayoutRoot");
-            Layer = (Border)GetTemplateChild("Layer");
-            AnimationBorder = (Border)GetTemplateChild("AnimationBorder");
-            DialogWrapper = (Grid)GetTemplateChild("DialogWrapper");
-            ShadowBorder = (Rectangle)GetTemplateChild("ShadowBorder");
-            ModalContent = (Border)GetTemplateChild("ModalContent");
-            TitleText = (TextBlock)GetTemplateChild("TitleText");
-            CloseButton = (ButtonBase)GetTemplateChild("CloseButton");
+            LayoutRoot = (Grid)GetTemplateChild(nameof(LayoutRoot));
+            Layer = (Border)GetTemplateChild(nameof(Layer));
+            AnimationBorder = (Border)GetTemplateChild(nameof(AnimationBorder));
+            DialogWrapper = (Grid)GetTemplateChild(nameof(DialogWrapper));
+            OuterBorder = (Rectangle)GetTemplateChild(nameof(OuterBorder));
+            ShadowBorder = (Rectangle)GetTemplateChild(nameof(ShadowBorder));
+            ModalContent = (Grid)GetTemplateChild(nameof(ModalContent));
+            TitleText = (TextBlock)GetTemplateChild(nameof(TitleText));
+            CloseButton = (ButtonBase)GetTemplateChild(nameof(CloseButton));
 
             ElementCompositionPreview.SetIsTranslationEnabled(AnimationBorder, true);
 
-            if (!CanUseThemeShadow) ModalContent.SizeChanged += (a, b) => {
-                ShadowBorder.Height = ModalContent.ActualHeight;
-                if(_visual != null) {
-                    _visual.Size = ModalContent.RenderSize.ToVector2();
-                    _shadow.Mask = ShadowBorder.GetAlphaMask();
+            ModalContent.SizeChanged += (a, b) => {
+                OuterBorder.Width = ModalContent.ActualWidth + (BorderThickness.Left * 2);
+                OuterBorder.Height = ModalContent.ActualHeight + (BorderThickness.Left * 2);
+                if (!CanUseThemeShadow) {
+                    ShadowBorder.Height = ModalContent.ActualHeight;
+                    if (_visual != null) {
+                        _visual.Size = ModalContent.RenderSize.ToVector2();
+                        _shadow.Mask = ShadowBorder.GetAlphaMask();
+                    }
                 }
             };
 
@@ -167,7 +175,9 @@ namespace Elorucov.Toolkit.UWP.Controls {
             ApplicationView.GetForCurrentView().VisibleBoundsChanged += (a, b) => Resize();
             Loaded += (a, b) => {
                 if (TitleText != null) TitleText.Visibility = String.IsNullOrEmpty(Title) ? Visibility.Collapsed : Visibility.Visible;
+                ChangeBorderThickness();
                 ChangeMaxWidth(this, MaxWidthProperty);
+                ChangeMaxHeight(this, MaxHeightProperty);
                 ChangeMargin(this, MarginProperty);
                 UpdateCornersRadius(CornersRadius);
                 Animate(Windows.UI.Composition.AnimationDirection.Normal, animationDuration);
@@ -241,6 +251,23 @@ namespace Elorucov.Toolkit.UWP.Controls {
             DialogWrapper.Margin = new Thickness(0, top, 0, bottom);
         }
 
+        private void ChangeBorderThickness() {
+            double[] thickness = new double[4] {
+                    BorderThickness.Left,
+                    BorderThickness.Right,
+                    BorderThickness.Top,
+                    BorderThickness.Bottom
+                };
+            if (Array.TrueForAll(thickness, (v) => v == BorderThickness.Left)) {
+                if (OuterBorder == null) return;
+                OuterBorder.StrokeThickness = BorderThickness.Left;
+                OuterBorder.Width = ModalContent.ActualWidth + (BorderThickness.Left * 2);
+                OuterBorder.Height = ModalContent.ActualHeight + (BorderThickness.Left * 2);
+            } else {
+                throw new ArgumentException("Thickness must be equal to each other.", nameof(BorderThickness));
+            }
+        }
+
         private void ChangeShadowCornersRadius(DependencyObject sender, DependencyProperty dp) {
             double r = (double)GetValue(dp);
             UpdateCornersRadius(r);
@@ -252,10 +279,26 @@ namespace Elorucov.Toolkit.UWP.Controls {
             if (!dontUpdateMaxWidth) {
                 if (ModalContent != null) {
                     ModalContent.MaxWidth = mw;
+                    OuterBorder.MaxWidth = mw + (BorderThickness.Left * 2);
                     if (!CanUseThemeShadow) ShadowBorder.MaxWidth = mw;
                     dontUpdateMaxWidth = true;
                     MaxWidth = Double.MaxValue;
                     dontUpdateMaxWidth = false;
+                }
+            }
+        }
+
+        bool dontUpdateMaxHeight = false;
+        private void ChangeMaxHeight(DependencyObject sender, DependencyProperty dp) {
+            double mw = (double)GetValue(dp);
+            if (!dontUpdateMaxHeight) {
+                if (ModalContent != null) {
+                    ModalContent.MaxHeight = mw;
+                    OuterBorder.MaxHeight = mw + (BorderThickness.Left * 2);
+                    if (!CanUseThemeShadow) ShadowBorder.MaxHeight = mw;
+                    dontUpdateMaxHeight = true;
+                    MaxHeight = Double.MaxValue;
+                    dontUpdateMaxHeight = false;
                 }
             }
         }
@@ -266,6 +309,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             if (!dontUpdateMargin) {
                 if (ModalContent != null) {
                     ModalContent.Margin = t;
+                    OuterBorder.Margin = new Thickness(t.Left - 1, t.Top - 1, t.Right - 1, t.Bottom - 1);
                     if (!CanUseThemeShadow) ShadowBorder.Margin = t;
                     dontUpdateMargin = true;
                     Margin = new Thickness(0);
@@ -277,6 +321,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         private void UpdateCornersRadius(double r) {
             if(ModalContent != null && ShadowBorder != null) {
                 ModalContent.CornerRadius = new CornerRadius(r);
+                OuterBorder.RadiusX = OuterBorder.RadiusY = r + 1;
                 if (!CanUseThemeShadow) {
                     ShadowBorder.RadiusX = r;
                     ShadowBorder.RadiusY = r;

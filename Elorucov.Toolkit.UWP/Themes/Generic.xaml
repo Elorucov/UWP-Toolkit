@@ -22,18 +22,21 @@
                                     <VisualState.Setters>
                                         <Setter Target="ModalContent.VerticalAlignment" Value="Bottom"/>
                                         <Setter Target="ShadowBorder.VerticalAlignment" Value="Bottom"/>
+                                        <Setter Target="OuterBorder.VerticalAlignment" Value="Bottom"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Center">
                                     <VisualState.Setters>
                                         <Setter Target="ModalContent.VerticalAlignment" Value="Center"/>
                                         <Setter Target="ShadowBorder.VerticalAlignment" Value="Center"/>
+                                        <Setter Target="OuterBorder.VerticalAlignment" Value="Center"/>
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="Stretch">
                                     <VisualState.Setters>
                                         <Setter Target="ModalContent.VerticalAlignment" Value="Stretch"/>
                                         <Setter Target="ShadowBorder.VerticalAlignment" Value="Stretch"/>
+                                        <Setter Target="OuterBorder.VerticalAlignment" Value="Stretch"/>
                                     </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
@@ -41,29 +44,28 @@
                         <Border x:Name="Layer" Background="{TemplateBinding LayerBrush}"/>
                         <Border x:Name="AnimationBorder">
                             <Grid x:Name="DialogWrapper">
+                                <Rectangle x:Name="OuterBorder" HorizontalAlignment="Center" Margin="-1"
+                                        Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}"/>
                                 <Rectangle x:Name="ShadowBorder" MaxWidth="{TemplateBinding MaxWidth}" 
                                            Fill="{TemplateBinding Background}" HorizontalAlignment="Stretch"/>
-                                <Border x:Name="ModalContent" Background="{TemplateBinding Background}" 
-                                        HorizontalAlignment="Stretch" MaxWidth="{TemplateBinding MaxWidth}"
-                                        BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock x:Name="TitleText" Margin="13,9,0,12.3984" MaxHeight="48" VerticalAlignment="Center" FontSize="20" Visibility="Collapsed" Text="{TemplateBinding Title}"/>
-                                            <Button x:Name="CloseButton" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="48" Height="48" 
+                                <Grid x:Name="ModalContent" Background="{TemplateBinding Background}" 
+                                        HorizontalAlignment="Stretch" MaxWidth="{TemplateBinding MaxWidth}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ContentPresenter Grid.Row="1" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                                    <Grid x:Name="TitleBar">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="TitleText" Margin="13,9,0,12" MaxHeight="48" VerticalAlignment="Center" FontSize="20" Visibility="Collapsed" Text="{TemplateBinding Title}"/>
+                                        <Button x:Name="CloseButton" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="48" Height="48" 
                                                 Background="Transparent" BorderThickness="0" Visibility="{TemplateBinding CloseButtonVisibility}"
                                                 FontSize="16" FontFamily="Segoe MDL2 Assets" Content=""/>
-                                        </Grid>
                                     </Grid>
-                                </Border>
+                                </Grid>
                             </Grid>
                         </Border>
                     </Grid>
