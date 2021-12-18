@@ -29,6 +29,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         Popup popup;
         bool IsWide = false;
         bool WasShowed = false;
+        bool IsAnimationsEnabled { get { return new UISettings().AnimationsEnabled; } }
 
         Grid LayoutRoot;
         Border Layer;
@@ -196,7 +197,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         public async void Hide(object data = null) {
             ModalsManager.Remove(this);
             Animate(Windows.UI.Composition.AnimationDirection.Reverse, animationDuration);
-            await Task.Delay(animationDuration);
+            if (IsAnimationsEnabled) await Task.Delay(animationDuration);
             Closed?.Invoke(this, data);
             popup.IsOpen = false;
         }
@@ -361,6 +362,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         private void Animate(Windows.UI.Composition.AnimationDirection direction, int duration) {
+            if (!IsAnimationsEnabled) return;
             if (Window.Current.Bounds.Width > ModalContent.MaxWidth) {
                 PerformZoomAnimation(direction, duration);
             } else {
