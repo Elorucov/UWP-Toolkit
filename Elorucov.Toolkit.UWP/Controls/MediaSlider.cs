@@ -48,6 +48,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
             set { SetValue(BufferingProgressProperty, value); }
         }
 
+        UIElement DragStopHandlerElement { get; set; } = Window.Current.Content;
+
         public event EventHandler<TimeSpan> PositionChanged;
 
         #region Private fields
@@ -94,8 +96,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
         private void StartDragThumb(object sender, PointerRoutedEventArgs e) {
             isPressing = true;
             ChangeThumbPosition(e.GetCurrentPoint(PointerArea).Position.X);
-            Window.Current.Content.PointerMoved += Delta;
-            Window.Current.Content.PointerReleased += StopDragThumb;
+            DragStopHandlerElement.PointerMoved += Delta;
+            DragStopHandlerElement.PointerReleased += StopDragThumb;
         }
 
         private void Delta(object sender, PointerRoutedEventArgs e) {
@@ -115,8 +117,8 @@ namespace Elorucov.Toolkit.UWP.Controls {
         }
 
         private void StopDragThumb() {
-            Window.Current.Content.PointerMoved -= Delta;
-            Window.Current.Content.PointerReleased -= StopDragThumb;
+            DragStopHandlerElement.PointerMoved -= Delta;
+            DragStopHandlerElement.PointerReleased -= StopDragThumb;
             isPressing = false;
 
             double d = Duration.TotalMilliseconds;
