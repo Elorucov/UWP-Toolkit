@@ -124,7 +124,7 @@
                     <Viewbox Stretch="Uniform">
                         <Grid x:Name="AvatarContainer" Width="48" Height="48" CornerRadius="24">
                             <Ellipse x:Name="BackgroundBorder" Fill="#7F7F7F" Width="48" Height="48"/>
-                            <TextBlock x:Name="AvatarInitials" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" LineStackingStrategy="BlockLineHeight" LineHeight="21" FontSize="20"/>
+                            <TextBlock x:Name="AvatarInitials" FontWeight="SemiBold" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" LineStackingStrategy="BlockLineHeight" LineHeight="21" FontSize="20"/>
                             <Ellipse x:Name="AvatarImageFallback" Width="48" Height="48"/>
                         </Grid>
                     </Viewbox>

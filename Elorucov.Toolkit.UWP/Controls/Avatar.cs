@@ -122,8 +122,14 @@ namespace Elorucov.Toolkit.UWP.Controls {
                         DecodePixelType = DecodePixelType.Logical,
                     };
                 }
-                bi.ImageOpened += (a, b) => BackgroundBorder.Visibility = Visibility.Collapsed;
-                bi.ImageFailed += (a, b) => BackgroundBorder.Visibility = Visibility.Visible;
+                bi.ImageOpened += (a, b) => {
+                    BackgroundBorder.Visibility = Visibility.Collapsed;
+                    AvatarInitials.Visibility = Visibility.Collapsed;
+                };
+                bi.ImageFailed += (a, b) => {
+                    BackgroundBorder.Visibility = Visibility.Visible;
+                    AvatarInitials.Visibility = Visibility.Visible;
+                };
                 AvatarImageSource = bi;
 
                 ChangeDecodeSize();

@@ -48,7 +48,7 @@ namespace Elorucov.Toolkit.UWP.Controls {
             set { SetValue(BufferingProgressProperty, value); }
         }
 
-        UIElement DragStopHandlerElement { get; set; } = Window.Current.Content;
+        public UIElement DragStopHandlerElement { get; set; } = Window.Current.Content;
 
         public event EventHandler<TimeSpan> PositionChanged;
 
